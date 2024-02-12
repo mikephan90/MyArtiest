@@ -15,7 +15,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = TabBarViewController()
+        
+        
+        if AuthManager.shared.isSignedIn {
+            AuthManager.shared.refreshTokenIfNeeded(completion: nil) // refreshes on launch
+            window.rootViewController = TabBarViewController()
+        } else {
+            // need to have welcome/onboarding screen first. if local selected genre is there, take to main
+            let navVC = UINavigationController(rootViewController: OnboardingViewController())
+            navVC.navigationBar.prefersLargeTitles = true
+            navVC.viewControllers.first?.navigationItem.largeTitleDisplayMode = .automatic
+            window.rootViewController = navVC
+            
+        }
+        
         
         window.makeKeyAndVisible()
         self.window = window
