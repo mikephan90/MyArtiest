@@ -9,13 +9,17 @@ import UIKit
 
 class SelectGenreViewController: UIViewController {
     
+    // MARK: - Properties
+    
+    private var viewModel = SelectGenresViewModel()
     private var collectionView: UICollectionView!
-    private var genres: Set<String> = ["Rock", "Pop", "Hip Hop", "Jazz"] // import from spotifyAPI the genre list
+    private var genres = [String]()
     private var selectedGenres: Set<String> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        fetchData()
     }
     
     // MARK: - UI
@@ -34,6 +38,22 @@ class SelectGenreViewController: UIViewController {
         collectionView.allowsMultipleSelection = true
         collectionView.register(GenreOptionCell.self, forCellWithReuseIdentifier: GenreOptionCell.identifier)
         view.addSubview(collectionView)
+    }
+    
+    // MARK: - Fetch Data
+    
+    private func fetchData() {
+        viewModel.fetchData { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    self?.genres = response.genres
+                    self?.collectionView.reloadData()
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }
 }
 

@@ -19,7 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if AuthManager.shared.isSignedIn {
             AuthManager.shared.refreshTokenIfNeeded(completion: nil) // refreshes on launch
-            window.rootViewController = TabBarViewController()
+            if UserDefaults.standard.bool(forKey: "first_login") {
+                window.rootViewController = SelectGenreViewController()
+            } else {
+                window.rootViewController = TabBarViewController()
+            }
         } else {
             // need to have welcome/onboarding screen first. if local selected genre is there, take to main
             let navVC = UINavigationController(rootViewController: OnboardingViewController())

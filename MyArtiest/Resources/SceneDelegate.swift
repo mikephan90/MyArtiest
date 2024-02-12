@@ -17,7 +17,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         if AuthManager.shared.isSignedIn {
-            window.rootViewController = TabBarViewController()
+            if !UserDefaults.standard.bool(forKey: "first_login") {
+                window.rootViewController = SelectGenreViewController()
+            } else {
+                window.rootViewController = TabBarViewController()
+            }
+            
+           
         } else {
             let navVC = UINavigationController(rootViewController: OnboardingViewController())
             navVC.navigationBar.prefersLargeTitles = true

@@ -33,12 +33,34 @@ final class APICaller {
     // MARK: - Genres
     
     public func getGenres(completion: @escaping (Result<GenreResponse, Error>) -> Void) {
-//        createRequest
+        createRequest(with: URL(string: APIConstants.baseApiUrl + "/recommendations/available-genre-seeds"), type: .GET) { request in
+            URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                do {
+                    let result = try JSONDecoder().decode(GenreResponse.self, from: data)
+                    print(result)
+                    completion(.success(result))
+                } catch {
+                    completion(.failure(error))
+                }
+            }.resume()
+        }
     }
     
     // MARK: - API Helpers
     
     private func createRequest(with url: URL?, type: HTTPMethod, completion: @escaping (URLRequest) -> Void) {
-//        AuthManager.shared
+        AuthManager.shared.withValidToken { token in
+            guard let apiUrl = url else { return }
+            
+            var request = URLRequest(url: apiUrl)
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            request.httpMethod = type.rawValue
+            request.timeoutInterval = 30
+            completion(request)
+        }
     }
 }
