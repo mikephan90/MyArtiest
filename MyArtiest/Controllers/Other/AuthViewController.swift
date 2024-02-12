@@ -34,7 +34,6 @@ class AuthViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         title = "Sign In"
         view.backgroundColor = .systemBackground
         view.addSubview(webView)
@@ -58,8 +57,8 @@ class AuthViewController: UIViewController {
 extension AuthViewController: WKNavigationDelegate {
     // Because we added observants to the navigation delegate for webview
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-      
         
+      
         guard let url = webView.url,
               let code = URLComponents(string: url.absoluteString)?.queryItems?.first(where: {
                   $0.name == "code"

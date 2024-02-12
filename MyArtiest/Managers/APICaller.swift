@@ -39,6 +39,6 @@ final class APICaller {
     // MARK: - API Helpers
     
     private func createRequest(with url: URL?, type: HTTPMethod, completion: @escaping (URLRequest) -> Void) {
-        AuthManager.shared
+//        AuthManager.shared
     }
 }

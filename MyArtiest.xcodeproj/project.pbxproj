@@ -58,6 +58,7 @@
 		B1CFFFA82B7ABF7F00229CF1 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		B1CFFFAA2B7AC08D00229CF1 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		B1CFFFAC2B7AC1D000229CF1 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		B1CFFFAE2B7AC33D00229CF1 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +75,7 @@
 		B1CFFF622B79FB0F00229CF1 = {
 			isa = PBXGroup;
 			children = (
+				B1CFFFAE2B7AC33D00229CF1 /* config.xcconfig */,
 				B1CFFF6D2B79FB0F00229CF1 /* MyArtiest */,
 				B1CFFF6C2B79FB0F00229CF1 /* Products */,
 			);
@@ -292,6 +294,7 @@
 /* Begin XCBuildConfiguration section */
 		B1CFFF7D2B79FB1000229CF1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B1CFFFAE2B7AC33D00229CF1 /* config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -355,6 +358,7 @@
 		};
 		B1CFFF7E2B79FB1000229CF1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B1CFFFAE2B7AC33D00229CF1 /* config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
