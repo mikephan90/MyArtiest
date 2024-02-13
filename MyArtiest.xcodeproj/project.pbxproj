@@ -39,7 +39,6 @@
 		B1CFFFC22B7C21D000229CF1 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFC12B7C21D000229CF1 /* Artist.swift */; };
 		B1CFFFC52B7C234000229CF1 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = B1CFFFC42B7C234000229CF1 /* SDWebImage */; };
 		B1CFFFC72B7C234000229CF1 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B1CFFFC62B7C234000229CF1 /* SDWebImageMapKit */; };
-		B1CFFFC92B7C35F200229CF1 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFC82B7C35F200229CF1 /* TestView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,7 +75,6 @@
 		B1CFFFBD2B7C1CBC00229CF1 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		B1CFFFBF2B7C21BC00229CF1 /* APIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIImage.swift; sourceTree = "<group>"; };
 		B1CFFFC12B7C21D000229CF1 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
-		B1CFFFC82B7C35F200229CF1 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +140,6 @@
 				B1CFFFB52B7C114500229CF1 /* NewSongCollectionViewCell.swift */,
 				B1CFFF942B7A07A400229CF1 /* TItleHeaderCollectionCollectionReusableView.swift */,
 				B1CFFF9C2B7AB64B00229CF1 /* GenreOptionCell.swift */,
-				B1CFFFC82B7C35F200229CF1 /* TestView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -292,7 +289,6 @@
 				B1CFFF892B79FDD700229CF1 /* TabBarViewController.swift in Sources */,
 				B1CFFF932B7A02E500229CF1 /* SongCellViewModel.swift in Sources */,
 				B1CFFFA12B7ABDBC00229CF1 /* GenreResponse.swift in Sources */,
-				B1CFFFC92B7C35F200229CF1 /* TestView.swift in Sources */,
 				B1CFFFB62B7C114500229CF1 /* NewSongCollectionViewCell.swift in Sources */,
 				B1CFFF992B7A867800229CF1 /* SelectGenreViewController.swift in Sources */,
 				B1CFFF732B79FB0F00229CF1 /* HomeViewController.swift in Sources */,
