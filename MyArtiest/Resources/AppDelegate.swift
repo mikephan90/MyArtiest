@@ -16,21 +16,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         
-        
         if AuthManager.shared.isSignedIn {
             AuthManager.shared.refreshTokenIfNeeded(completion: nil) // refreshes on launch
-            if UserDefaults.standard.bool(forKey: "first_login") {
-                window.rootViewController = SelectGenreViewController()
-            } else {
+//            if !UserDefaults.standard.bool(forKey: "first_login") {
+//                window.rootViewController = SelectGenreViewController()
+//            } else {
                 window.rootViewController = TabBarViewController()
-            }
+//            }
         } else {
             // need to have welcome/onboarding screen first. if local selected genre is there, take to main
-            let navVC = UINavigationController(rootViewController: OnboardingViewController())
+            let navVC = UINavigationController(rootViewController: SelectGenreViewController())
             navVC.navigationBar.prefersLargeTitles = true
             navVC.viewControllers.first?.navigationItem.largeTitleDisplayMode = .automatic
             window.rootViewController = navVC
-            
         }
         
         
