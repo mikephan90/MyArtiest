@@ -1,17 +1,18 @@
 //
-//  FeaturedSongCollectionViewCell.swift
+//  NewSongCollectionViewCell.swift
 //  MyArtiest
 //
-//  Created by Mike Phan on 2/12/24.
+//  Created by Mike Phan on 2/13/24.
 //
 
+import Foundation
 import UIKit
 
-class FeaturedSongCollectionViewCell: UICollectionViewCell {
+class NewSongCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    static let identifier = "FeaturedSongCollectionViewCell"
+    static let identifier = "NewSongCollectionViewCell"
     
     // MARK: - Views
     
@@ -27,6 +28,7 @@ class FeaturedSongCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .semibold)
         label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
@@ -35,20 +37,13 @@ class FeaturedSongCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .light)
         label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.largeContentTitle = "Featured Song"
-        contentView.backgroundColor = .secondarySystemBackground
-        contentView.addSubview(backgroundImage)
-        contentView.addSubview(songNameLabel)
-        contentView.addSubview(artistNameLabel)
-        contentView.clipsToBounds = true
-        contentView.layer.masksToBounds = true
-        contentView.layer.cornerRadius = 10
     }
     
     required init?(coder: NSCoder) {
@@ -64,7 +59,7 @@ class FeaturedSongCollectionViewCell: UICollectionViewCell {
     
     func configure(with viewModel: SongCellViewModel) {
 //        backgroundImage.sd_setImage
-        songNameLabel.text = viewModel.name
-        artistNameLabel.text = viewModel.artist
+        songNameLabel.text = "song name"
+        artistNameLabel.text = "artist name"
     }
 }

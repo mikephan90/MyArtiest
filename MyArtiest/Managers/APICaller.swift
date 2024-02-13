@@ -41,7 +41,24 @@ final class APICaller {
                 }
                 do {
                     let result = try JSONDecoder().decode(GenreResponse.self, from: data)
-                    print(result)
+                    completion(.success(result))
+                } catch {
+                    completion(.failure(error))
+                }
+            }.resume()
+        }
+    }
+    
+    public func getRecommendedTracks(genres: Set<String>, completion: @escaping (Result<RecommendedTrackResponse, Error>) -> Void) {
+        let seeds = genres.joined(separator: ",")
+        createRequest(with: URL(string: APIConstants.baseApiUrl + "/recommendations?limit=10&seed_genres=\(seeds)"), type: .GET) { request in
+            URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                do {
+                    let result = try JSONDecoder().decode(RecommendedTrackResponse.self, from: data)
                     completion(.success(result))
                 } catch {
                     completion(.failure(error))
