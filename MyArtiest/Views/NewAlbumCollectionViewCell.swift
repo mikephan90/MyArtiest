@@ -30,7 +30,7 @@ class NewAlbumCollectionViewCell: UICollectionViewCell {
     private let albumNameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .semibold)
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -63,6 +63,7 @@ class NewAlbumCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
 
         let imageSize: CGFloat = contentView.width
+        addShadow()
      
         NSLayoutConstraint.activate([
             backgroundImage.topAnchor.constraint(equalTo: contentView.topAnchor),

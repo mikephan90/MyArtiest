@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            if !UserDefaults.standard.bool(forKey: "first_login") {
 //                window.rootViewController = SelectGenreViewController()
 //            } else {
-                window.rootViewController = TabBarViewController()
+                window.rootViewController = PlayerViewController()
 //            }
             
            

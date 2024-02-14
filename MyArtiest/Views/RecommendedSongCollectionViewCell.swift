@@ -15,7 +15,7 @@ class RecommendedSongCollectionViewCell: UICollectionViewCell {
     static let identifier = "RecommendedSongCollectionViewCell"
     
     // MARK: - Views
-
+    
     private let backgroundImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "photo")
@@ -65,6 +65,9 @@ class RecommendedSongCollectionViewCell: UICollectionViewCell {
     // MARK: - UI
     
     private func setup() {
+        contentView.layer.borderWidth = 1.5
+        contentView.layer.borderColor = UIColor.customPrimary.cgColor
+        
         contentView.largeContentTitle = "New Releases"
         contentView.backgroundColor = .secondarySystemBackground
         contentView.addSubview(backgroundImage)
@@ -74,6 +77,7 @@ class RecommendedSongCollectionViewCell: UICollectionViewCell {
         contentView.clipsToBounds = true
         contentView.layer.masksToBounds = true
         contentView.layer.cornerRadius = 10
+        addShadow()
         
         overlayView.frame = contentView.bounds
         

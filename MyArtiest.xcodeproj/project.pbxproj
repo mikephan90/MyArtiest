@@ -14,7 +14,7 @@
 		B1CFFF7B2B79FB1000229CF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1CFFF792B79FB1000229CF1 /* LaunchScreen.storyboard */; };
 		B1CFFF892B79FDD700229CF1 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF882B79FDD700229CF1 /* TabBarViewController.swift */; };
 		B1CFFF8B2B79FDFC00229CF1 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF8A2B79FDFC00229CF1 /* ProfileViewController.swift */; };
-		B1CFFF8D2B79FE1600229CF1 /* RadioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF8C2B79FE1600229CF1 /* RadioViewController.swift */; };
+		B1CFFF8D2B79FE1600229CF1 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF8C2B79FE1600229CF1 /* HistoryViewController.swift */; };
 		B1CFFF8F2B79FFE300229CF1 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF8E2B79FFE300229CF1 /* HomeViewModel.swift */; };
 		B1CFFF912B7A01AB00229CF1 /* RecommendedSongCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF902B7A01AB00229CF1 /* RecommendedSongCollectionViewCell.swift */; };
 		B1CFFF932B7A02E500229CF1 /* SongCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF922B7A02E500229CF1 /* SongCellViewModel.swift */; };
@@ -42,6 +42,7 @@
 		B1CFFFCE2B7C3F7D00229CF1 /* NewAlbumReleasesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFCD2B7C3F7D00229CF1 /* NewAlbumReleasesResponse.swift */; };
 		B1CFFFD02B7D09F100229CF1 /* FavoriteArtistCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFCF2B7D09F100229CF1 /* FavoriteArtistCollectionViewCell.swift */; };
 		B1CFFFD52B7D36DF00229CF1 /* AddNewArtistCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFD42B7D36DF00229CF1 /* AddNewArtistCollectionViewCell.swift */; };
+		B1CFFFD92B7D7F4D00229CF1 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFD82B7D7F4D00229CF1 /* PlayerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,7 +55,7 @@
 		B1CFFF7C2B79FB1000229CF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1CFFF882B79FDD700229CF1 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		B1CFFF8A2B79FDFC00229CF1 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		B1CFFF8C2B79FE1600229CF1 /* RadioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioViewController.swift; sourceTree = "<group>"; };
+		B1CFFF8C2B79FE1600229CF1 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		B1CFFF8E2B79FFE300229CF1 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B1CFFF902B7A01AB00229CF1 /* RecommendedSongCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedSongCollectionViewCell.swift; sourceTree = "<group>"; };
 		B1CFFF922B7A02E500229CF1 /* SongCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongCellViewModel.swift; sourceTree = "<group>"; };
@@ -81,6 +82,7 @@
 		B1CFFFCD2B7C3F7D00229CF1 /* NewAlbumReleasesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAlbumReleasesResponse.swift; sourceTree = "<group>"; };
 		B1CFFFCF2B7D09F100229CF1 /* FavoriteArtistCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteArtistCollectionViewCell.swift; sourceTree = "<group>"; };
 		B1CFFFD42B7D36DF00229CF1 /* AddNewArtistCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewArtistCollectionViewCell.swift; sourceTree = "<group>"; };
+		B1CFFFD82B7D7F4D00229CF1 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,7 +202,7 @@
 				B1CFFF722B79FB0F00229CF1 /* HomeViewController.swift */,
 				B1CFFF882B79FDD700229CF1 /* TabBarViewController.swift */,
 				B1CFFF8A2B79FDFC00229CF1 /* ProfileViewController.swift */,
-				B1CFFF8C2B79FE1600229CF1 /* RadioViewController.swift */,
+				B1CFFF8C2B79FE1600229CF1 /* HistoryViewController.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -211,6 +213,7 @@
 				B1CFFF982B7A867800229CF1 /* SelectGenreViewController.swift */,
 				B1CFFFA62B7ABF6E00229CF1 /* AuthViewController.swift */,
 				B1CFFFAA2B7AC08D00229CF1 /* OnboardingViewController.swift */,
+				B1CFFFD82B7D7F4D00229CF1 /* PlayerViewController.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1CFFF892B79FDD700229CF1 /* TabBarViewController.swift in Sources */,
+				B1CFFFD92B7D7F4D00229CF1 /* PlayerViewController.swift in Sources */,
 				B1CFFF932B7A02E500229CF1 /* SongCellViewModel.swift in Sources */,
 				B1CFFFA12B7ABDBC00229CF1 /* GenreResponse.swift in Sources */,
 				B1CFFFB62B7C114500229CF1 /* NewAlbumCollectionViewCell.swift in Sources */,
@@ -316,7 +320,7 @@
 				B1CFFFAB2B7AC08D00229CF1 /* OnboardingViewController.swift in Sources */,
 				B1CFFF8F2B79FFE300229CF1 /* HomeViewModel.swift in Sources */,
 				B1CFFFA32B7ABE3100229CF1 /* AuthManager.swift in Sources */,
-				B1CFFF8D2B79FE1600229CF1 /* RadioViewController.swift in Sources */,
+				B1CFFF8D2B79FE1600229CF1 /* HistoryViewController.swift in Sources */,
 				B1CFFF8B2B79FDFC00229CF1 /* ProfileViewController.swift in Sources */,
 				B1CFFF9D2B7AB64B00229CF1 /* GenreOptionCell.swift in Sources */,
 				B1CFFFD52B7D36DF00229CF1 /* AddNewArtistCollectionViewCell.swift in Sources */,

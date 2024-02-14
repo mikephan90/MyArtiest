@@ -60,6 +60,8 @@ class FavoriteArtistCollectionViewCell: UICollectionViewCell {
     // MARK: - Layout
     
     private func setupView() {
+        addShadow()
+        
         addSubview(artistButton)
         artistButton.addSubview(buttonImage)
         

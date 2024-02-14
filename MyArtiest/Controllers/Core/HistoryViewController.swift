@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RadioViewController: UIViewController {
+class HistoryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

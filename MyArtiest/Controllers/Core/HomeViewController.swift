@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate {
     
     // MARK: - Enum
     
@@ -40,11 +40,22 @@ class HomeViewController: UIViewController {
         return spinner
     }()
     
+    let searchController: UISearchController = {
+        let vc = UISearchController(searchResultsController: HistoryViewController())
+        vc.searchBar.placeholder = "Songs or Artists"
+        vc.searchBar.searchBarStyle = .prominent
+//        vc.searchBar.layer.borderWidth = 1
+//        vc.searchBar.layer.borderColor = UIColor.customPrimary.cgColor
+        vc.definesPresentationContext = true
+        
+        return vc
+    }()
+    
     // get from local
     private var genres: Set<String> = ["hip-hop", "chill", "dubstep"]
     private var favoriteArtists: Set<String> = ["Bruno Mars", "SLANDER", "NewJeans", "LE SSERAFIM"]
-//    private var favoriteArtists: Set<String> = []
-
+    //    private var favoriteArtists: Set<String> = []
+    
     // If empty, display empty cell
     
     // MARK: - Lifecycle
@@ -59,6 +70,9 @@ class HomeViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .customBackground
+        title = "Home"
+//        navigationController?.isNavigationBarHidden = true
+        
         collectionView = UICollectionView(
             frame: view.bounds,
             collectionViewLayout: UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
@@ -68,6 +82,7 @@ class HomeViewController: UIViewController {
         
         collectionView.register(RecommendedSongCollectionViewCell.self, forCellWithReuseIdentifier: RecommendedSongCollectionViewCell.identifier)
         collectionView.register(NewAlbumCollectionViewCell.self, forCellWithReuseIdentifier: NewAlbumCollectionViewCell.identifier)
+        
         collectionView.register(FavoriteArtistCollectionViewCell.self, forCellWithReuseIdentifier: FavoriteArtistCollectionViewCell.identifier)
         collectionView.register(AddNewArtistCollectionViewCell.self, forCellWithReuseIdentifier: AddNewArtistCollectionViewCell.identifier)
         collectionView.register(TitleHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderCollectionReusableView.identifier)
@@ -77,21 +92,27 @@ class HomeViewController: UIViewController {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.backgroundColor = .clear
         
+        searchController.searchResultsUpdater = self
+        navigationItem.searchController = searchController
+        searchController.searchBar.delegate = self
+        
         view.addSubview(collectionView)
         
         // Temp until signout is implemented
         UserDefaults.standard.removeObject(forKey: "first_login")
     }
     
-    private static func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
-        let supplementaryViews = [
-            NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)),
-                elementKind: UICollectionView.elementKindSectionHeader,
-                alignment: .top
-            )
-        ]
+    func updateSearchResults(for searchController: UISearchController) {
+        // Required but not used. Future enhancement
+    }
     
+    private static func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
+        let supplementaryViews = [NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)),
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )]
+        
         switch section {
         case 0:
             // Create item, to a group, then into a section and return it
@@ -161,7 +182,7 @@ class HomeViewController: UIViewController {
             
             let section = NSCollectionLayoutSection(group: group)
             section.boundarySupplementaryItems = supplementaryViews
-    
+            
             return section
         default:
             let item = NSCollectionLayoutItem(
@@ -299,7 +320,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let title = sections[section].title
         let isFavoriteArtistSection = favoriteArtists.count > 1 && section == 2
         header.configure(with: title, isFavoriteArtistSection)
-
+        
         return header
     }
 }

@@ -57,7 +57,7 @@ class TitleHeaderCollectionReusableView: UICollectionReusableView {
             addSubview(addArtistButton)
             addArtistButton.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                addArtistButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
+                addArtistButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -22),
                 addArtistButton.centerYAnchor.constraint(equalTo: centerYAnchor)
             ])
         }
