@@ -1,8 +1,8 @@
 //
-//  TItleHeaderCollectionCollectionReusableView.swift
+//  TitleHeaderCollectionReusableView.swift
 //  MyArtiest
 //
-//  Created by Mike Phan on 2/12/24.
+//  Created by Mike Phan on 2/13/24.
 //
 
 import UIKit
@@ -17,7 +17,7 @@ class TitleHeaderCollectionReusableView: UICollectionReusableView {
         let label = UILabel()
         label.textColor = .label
         label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.font = .systemFont(ofSize: 18, weight: .bold)
         
         return label
     }()
@@ -26,7 +26,6 @@ class TitleHeaderCollectionReusableView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .systemBackground
         addSubview(labelText)
     }
     

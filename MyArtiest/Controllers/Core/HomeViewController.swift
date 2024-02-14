@@ -13,14 +13,14 @@ class HomeViewController: UIViewController {
     
     enum HomeSectionType {
         case recommendedSongs(viewModels: [SongCellViewModel])
-        case newSongs(viewModels: [NewSongCollectionViewCell])
-        case favoriteArtist(viewModels: [RecommendedSongCollectionViewCell])
+        case newAlbums(viewModels: [SongCellViewModel])
+        case favoriteArtists(viewModels: [RecommendedSongCollectionViewCell])
         
         var title: String {
             switch self {
-            case .recommendedSongs: return "Featured Song"
-            case .newSongs: return "New Songs"
-            case .favoriteArtist: return "Favorite Artist"
+            case .recommendedSongs: return "Recommended Songs"
+            case .newAlbums: return "Explore New Albums"
+            case .favoriteArtists: return "Favorite Artists"
             }
         }
     }
@@ -30,7 +30,15 @@ class HomeViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var viewModel = HomeViewModel()
     private var sections = [HomeSectionType]()
-    private var featuredSongs = [AudioTrack]()
+    private var recommendedSongs = [AudioTrack]()
+    private var newReleaseAlbums = [Album]()
+    
+    private let spinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView()
+        spinner.tintColor = .label
+        spinner.hidesWhenStopped = true
+        return spinner
+    }()
     
     // get from local
     private var genres: Set<String> = ["hip-hop", "chill", "dubstep"]
@@ -55,7 +63,8 @@ class HomeViewController: UIViewController {
         )
         
         collectionView.register(RecommendedSongCollectionViewCell.self, forCellWithReuseIdentifier: RecommendedSongCollectionViewCell.identifier)
-        collectionView.register(NewSongCollectionViewCell.self, forCellWithReuseIdentifier: NewSongCollectionViewCell.identifier)
+        collectionView.register(NewAlbumCollectionViewCell.self, forCellWithReuseIdentifier: NewAlbumCollectionViewCell.identifier)
+        collectionView.register(TitleHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderCollectionReusableView.identifier)
         
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -100,13 +109,14 @@ class HomeViewController: UIViewController {
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .groupPaging
             section.boundarySupplementaryItems = supplementaryViews
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 18, trailing: 0)
             
             return section
         case 1:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .absolute(200),
-                    heightDimension: .absolute(200)
+                    widthDimension: .fractionalHeight(1),
+                    heightDimension: .fractionalWidth(1.2)
                 )
             )
             
@@ -114,10 +124,9 @@ class HomeViewController: UIViewController {
             
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .absolute(200),
-                    heightDimension: .absolute(240)
+                    widthDimension: .absolute(200), heightDimension: .absolute(200)
                 ),
-                subitems: Array(repeating: item, count: 1)
+                subitems: Array(repeating: item, count: 2)
             )
             
             let section = NSCollectionLayoutSection(group: group)
@@ -174,12 +183,15 @@ class HomeViewController: UIViewController {
     // MARK: - APIs
     
     private func fetchData() {
-        viewModel.fetchSongs(genres: genres) { [weak self] result in
+        spinner.startAnimating()
+        viewModel.genres = genres
+        viewModel.fetchData { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
-                    self.featuredSongs = response
+                    self.recommendedSongs = response.0
+                    self.newReleaseAlbums = response.1
                     self.configureModels()
                     self.collectionView.reloadData()
                 case .failure(let error):
@@ -191,9 +203,16 @@ class HomeViewController: UIViewController {
     
     private func configureModels() {
         sections.removeAll()
-        sections.append(.recommendedSongs(viewModels: featuredSongs.compactMap {
+        sections.append(.recommendedSongs(viewModels: recommendedSongs.compactMap {
             return SongCellViewModel(
                 backgroundImage: URL(string: $0.album?.images.first?.url ?? ""),
+                name: $0.name,
+                artist: $0.artists.first?.name ?? "-"
+            )
+        }))
+        sections.append(.newAlbums(viewModels: newReleaseAlbums.compactMap {
+            return SongCellViewModel(
+                backgroundImage: URL(string: $0.images.first?.url ?? ""),
                 name: $0.name,
                 artist: $0.artists.first?.name ?? "-"
             )
@@ -205,7 +224,15 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        let type = sections[section]
+        switch type {
+        case .recommendedSongs(let viewModels):
+            return viewModels.count
+        case .newAlbums(let viewModels):
+            return viewModels.count
+        case .favoriteArtists(let viewModels):
+            return viewModels.count
+        }
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -224,22 +251,36 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             cell.configure(with: viewModel)
             
             return cell
-        case .newSongs(let viewModels):
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewSongCollectionViewCell.identifier, for: indexPath) as? NewSongCollectionViewCell else {
+        case .newAlbums(let viewModels):
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewAlbumCollectionViewCell.identifier, for: indexPath) as? NewAlbumCollectionViewCell else {
                 return UICollectionViewCell()
             }
             
-            cell.configure(with: SongCellViewModel(backgroundImage: URL(string: ""), name: "name", artist: "artist"))
+            let viewModel = viewModels[indexPath.row]
+            cell.configure(with: viewModel)
             
             return cell
-        case .favoriteArtist(let viewModel):
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendedSongCollectionViewCell.identifier, for: indexPath) as? RecommendedSongCollectionViewCell else {
+        case .favoriteArtists(let viewModel):
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewAlbumCollectionViewCell.identifier, for: indexPath) as? NewAlbumCollectionViewCell else {
                 return UICollectionViewCell()
             }
             
-            cell.configure(with: SongCellViewModel(backgroundImage: URL(string: ""), name: "name", artist: "artist"))
+//            let viewModel = viewModels[indexPath.row]
+//            cell.configure(with: viewModel)
             
             return cell
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleHeaderCollectionReusableView.identifier, for: indexPath) as? TitleHeaderCollectionReusableView, kind == UICollectionView.elementKindSectionHeader else {
+            return UICollectionReusableView()
+        }
+        
+        let section = indexPath.section
+        let title = sections[section].title
+        header.configure(with: title)
+        
+        return header
     }
 }

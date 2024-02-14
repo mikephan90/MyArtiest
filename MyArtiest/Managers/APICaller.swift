@@ -49,6 +49,28 @@ final class APICaller {
         }
     }
     
+    // MARK: - Albums
+    
+    public func getNewAlbumReleases(completion: @escaping (Result<NewAlbumReleasesResponse, Error>) -> Void) {
+        createRequest(with: URL(string: APIConstants.baseApiUrl + "/browse/new-releases?limit=50"), type: .GET) { request in
+            URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let result = try JSONDecoder().decode(NewAlbumReleasesResponse.self, from: data)
+                    completion(.success(result))
+                } catch {
+                    completion(.failure(error))
+                }
+            }.resume()
+        }
+    }
+    
+    // MARK: - Tracks
+    
     public func getRecommendedTracks(genres: Set<String>, completion: @escaping (Result<RecommendedTrackResponse, Error>) -> Void) {
         let seeds = genres.joined(separator: ",")
         createRequest(with: URL(string: APIConstants.baseApiUrl + "/recommendations?limit=10&seed_genres=\(seeds)"), type: .GET) { request in
