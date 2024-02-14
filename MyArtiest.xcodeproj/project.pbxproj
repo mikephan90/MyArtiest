@@ -40,6 +40,8 @@
 		B1CFFFC72B7C234000229CF1 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B1CFFFC62B7C234000229CF1 /* SDWebImageMapKit */; };
 		B1CFFFCB2B7C3AFE00229CF1 /* TitleHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFCA2B7C3AFE00229CF1 /* TitleHeaderCollectionReusableView.swift */; };
 		B1CFFFCE2B7C3F7D00229CF1 /* NewAlbumReleasesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFCD2B7C3F7D00229CF1 /* NewAlbumReleasesResponse.swift */; };
+		B1CFFFD02B7D09F100229CF1 /* FavoriteArtistCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFCF2B7D09F100229CF1 /* FavoriteArtistCollectionViewCell.swift */; };
+		B1CFFFD52B7D36DF00229CF1 /* AddNewArtistCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFD42B7D36DF00229CF1 /* AddNewArtistCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +79,8 @@
 		B1CFFFC12B7C21D000229CF1 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		B1CFFFCA2B7C3AFE00229CF1 /* TitleHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		B1CFFFCD2B7C3F7D00229CF1 /* NewAlbumReleasesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAlbumReleasesResponse.swift; sourceTree = "<group>"; };
+		B1CFFFCF2B7D09F100229CF1 /* FavoriteArtistCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteArtistCollectionViewCell.swift; sourceTree = "<group>"; };
+		B1CFFFD42B7D36DF00229CF1 /* AddNewArtistCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewArtistCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +146,8 @@
 				B1CFFFB52B7C114500229CF1 /* NewAlbumCollectionViewCell.swift */,
 				B1CFFF9C2B7AB64B00229CF1 /* GenreOptionCell.swift */,
 				B1CFFFCA2B7C3AFE00229CF1 /* TitleHeaderCollectionReusableView.swift */,
+				B1CFFFCF2B7D09F100229CF1 /* FavoriteArtistCollectionViewCell.swift */,
+				B1CFFFD42B7D36DF00229CF1 /* AddNewArtistCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -313,9 +319,11 @@
 				B1CFFF8D2B79FE1600229CF1 /* RadioViewController.swift in Sources */,
 				B1CFFF8B2B79FDFC00229CF1 /* ProfileViewController.swift in Sources */,
 				B1CFFF9D2B7AB64B00229CF1 /* GenreOptionCell.swift in Sources */,
+				B1CFFFD52B7D36DF00229CF1 /* AddNewArtistCollectionViewCell.swift in Sources */,
 				B1CFFF9F2B7ABCB400229CF1 /* APICaller.swift in Sources */,
 				B1CFFFC02B7C21BC00229CF1 /* APIImage.swift in Sources */,
 				B1CFFF912B7A01AB00229CF1 /* RecommendedSongCollectionViewCell.swift in Sources */,
+				B1CFFFD02B7D09F100229CF1 /* FavoriteArtistCollectionViewCell.swift in Sources */,
 				B1CFFFBA2B7C1C7F00229CF1 /* RecommendedTrackResponse.swift in Sources */,
 				B1CFFF6F2B79FB0F00229CF1 /* AppDelegate.swift in Sources */,
 				B1CFFF972B7A080800229CF1 /* Extensions.swift in Sources */,

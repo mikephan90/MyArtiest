@@ -79,6 +79,7 @@ final class APICaller {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
+                
                 do {
                     let result = try JSONDecoder().decode(RecommendedTrackResponse.self, from: data)
                     completion(.success(result))

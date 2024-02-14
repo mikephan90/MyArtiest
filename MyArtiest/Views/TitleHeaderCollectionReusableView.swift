@@ -12,6 +12,9 @@ class TitleHeaderCollectionReusableView: UICollectionReusableView {
     // MARK: - Properties
     
     static let identifier = "TitleHeaderCollectionReusableView"
+    private var addArtist: Bool!
+    
+    // MARK: - Views
     
     private let labelText: UILabel = {
         let label = UILabel()
@@ -20,6 +23,15 @@ class TitleHeaderCollectionReusableView: UICollectionReusableView {
         label.font = .systemFont(ofSize: 18, weight: .bold)
         
         return label
+    }()
+    
+    private let addArtistButton: UIButton = {
+        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold)
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
+        button.tintColor = .customPrimary
+            
+        return button
     }()
     
     // MARK: - Init
@@ -38,9 +50,29 @@ class TitleHeaderCollectionReusableView: UICollectionReusableView {
     override func layoutSubviews() {
         super.layoutSubviews()
         labelText.frame = CGRect(x: 14, y: 0, width: width - 30, height: height)
+        
+        addArtistButton.addTarget(self, action: #selector(addNewArtistButtonPressed), for: .touchUpInside)
+    
+        if addArtist {
+            addSubview(addArtistButton)
+            addArtistButton.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                addArtistButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -14),
+                addArtistButton.centerYAnchor.constraint(equalTo: centerYAnchor)
+            ])
+        }
     }
     
-    func configure(with title: String) {
+    // MARK: - Methods
+    
+    @objc func addNewArtistButtonPressed() {
+        print("pressed")
+    }
+    
+    func configure(with title: String, _ addArtistSection: Bool = false) {
         labelText.text = title
+        
+        print(addArtistSection)
+        self.addArtist = addArtistSection
     }
 }

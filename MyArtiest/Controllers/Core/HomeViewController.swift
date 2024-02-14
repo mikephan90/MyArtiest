@@ -14,7 +14,7 @@ class HomeViewController: UIViewController {
     enum HomeSectionType {
         case recommendedSongs(viewModels: [SongCellViewModel])
         case newAlbums(viewModels: [SongCellViewModel])
-        case favoriteArtists(viewModels: [RecommendedSongCollectionViewCell])
+        case favoriteArtists(viewModels: [String])
         
         var title: String {
             switch self {
@@ -42,6 +42,10 @@ class HomeViewController: UIViewController {
     
     // get from local
     private var genres: Set<String> = ["hip-hop", "chill", "dubstep"]
+    private var favoriteArtists: Set<String> = ["Bruno Mars", "SLANDER", "NewJeans", "LE SSERAFIM"]
+//    private var favoriteArtists: Set<String> = []
+
+    // If empty, display empty cell
     
     // MARK: - Lifecycle
     
@@ -64,6 +68,8 @@ class HomeViewController: UIViewController {
         
         collectionView.register(RecommendedSongCollectionViewCell.self, forCellWithReuseIdentifier: RecommendedSongCollectionViewCell.identifier)
         collectionView.register(NewAlbumCollectionViewCell.self, forCellWithReuseIdentifier: NewAlbumCollectionViewCell.identifier)
+        collectionView.register(FavoriteArtistCollectionViewCell.self, forCellWithReuseIdentifier: FavoriteArtistCollectionViewCell.identifier)
+        collectionView.register(AddNewArtistCollectionViewCell.self, forCellWithReuseIdentifier: AddNewArtistCollectionViewCell.identifier)
         collectionView.register(TitleHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderCollectionReusableView.identifier)
         
         collectionView.dataSource = self
@@ -85,7 +91,7 @@ class HomeViewController: UIViewController {
                 alignment: .top
             )
         ]
-        
+    
         switch section {
         case 0:
             // Create item, to a group, then into a section and return it
@@ -101,7 +107,7 @@ class HomeViewController: UIViewController {
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(0.9),
-                    heightDimension: .absolute(200)
+                    heightDimension: .absolute(160)
                 ),
                 subitems: Array(repeating: item, count: 1)
             )
@@ -109,14 +115,14 @@ class HomeViewController: UIViewController {
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .groupPaging
             section.boundarySupplementaryItems = supplementaryViews
-            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 18, trailing: 0)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
             
             return section
         case 1:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalHeight(1),
-                    heightDimension: .fractionalWidth(1.2)
+                    heightDimension: .fractionalWidth(1.5)
                 )
             )
             
@@ -124,7 +130,7 @@ class HomeViewController: UIViewController {
             
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .absolute(200), heightDimension: .absolute(200)
+                    widthDimension: .absolute(140), heightDimension: .absolute(140)
                 ),
                 subitems: Array(repeating: item, count: 2)
             )
@@ -132,35 +138,36 @@ class HomeViewController: UIViewController {
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .continuous
             section.boundarySupplementaryItems = supplementaryViews
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 60, trailing: 0)
             
             return section
         case 2:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .fractionalHeight(1)
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .absolute(55)
                 )
             )
             
-            item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 14, bottom: 0, trailing: 2)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 14, bottom: 14, trailing: 14)
             
             let group = NSCollectionLayoutGroup.vertical(
                 layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .absolute(80)
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .absolute(300)
                 ),
                 subitems: Array(repeating: item, count: 1)
             )
             
             let section = NSCollectionLayoutSection(group: group)
             section.boundarySupplementaryItems = supplementaryViews
-            
+    
             return section
         default:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .fractionalHeight(1.0)
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .fractionalHeight(1)
                 )
             )
             
@@ -217,9 +224,10 @@ class HomeViewController: UIViewController {
                 artist: $0.artists.first?.name ?? "-"
             )
         }))
+        sections.append(.favoriteArtists(viewModels: favoriteArtists.compactMap {
+            return $0
+        }))
     }
-    
-    
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -231,7 +239,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         case .newAlbums(let viewModels):
             return viewModels.count
         case .favoriteArtists(let viewModels):
-            return viewModels.count
+            return viewModels.isEmpty ? 1 : viewModels.count
         }
     }
     
@@ -261,14 +269,24 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             
             return cell
         case .favoriteArtists(let viewModel):
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewAlbumCollectionViewCell.identifier, for: indexPath) as? NewAlbumCollectionViewCell else {
-                return UICollectionViewCell()
+            if favoriteArtists.count < 1 {
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddNewArtistCollectionViewCell.identifier, for: indexPath) as? AddNewArtistCollectionViewCell else {
+                    return UICollectionViewCell()
+                }
+                
+                cell.configure()
+                
+                return cell
+            } else {
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteArtistCollectionViewCell.identifier, for: indexPath) as? FavoriteArtistCollectionViewCell else {
+                    return UICollectionViewCell()
+                }
+                
+                let viewModel = viewModel[indexPath.row]
+                cell.configure(with: viewModel)
+                
+                return cell
             }
-            
-//            let viewModel = viewModels[indexPath.row]
-//            cell.configure(with: viewModel)
-            
-            return cell
         }
     }
     
@@ -279,8 +297,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         let section = indexPath.section
         let title = sections[section].title
-        header.configure(with: title)
-        
+        let isFavoriteArtistSection = favoriteArtists.count > 1 && section == 2
+        header.configure(with: title, isFavoriteArtistSection)
+
         return header
     }
 }
