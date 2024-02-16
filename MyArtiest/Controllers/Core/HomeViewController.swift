@@ -214,14 +214,13 @@ class HomeViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         spinner.startAnimating()
         viewModel.genres = genres
         viewModel.fetchData { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
-                    self.recommendedSongs = response.0
                     self.newReleaseAlbums = response.1
                     self.configureModels()
-                    self.collectionView.reloadData()
+//                    self.collectionView.reloadData()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -231,7 +230,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating, UISearchBar
     
     private func configureModels() {
         sections.removeAll()
-        sections.append(.recommendedSongs(viewModels: recommendedSongs.compactMap {
+        sections.append(.recommendedSongs(viewModels: viewModel.recommendedTracks.compactMap {
             return SongCellViewModel(
                 backgroundImage: URL(string: $0.album?.images.first?.url ?? ""),
                 name: $0.name,
@@ -322,5 +321,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         header.configure(with: title, isFavoriteArtistSection)
         
         return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        // add per seciton for now just do recommended
+        let track = viewModel.recommendedTracks[indexPath.row]
+        let vc = PlayerViewController(selectedTrack: track)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

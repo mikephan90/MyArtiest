@@ -10,6 +10,7 @@ import Foundation
 class HomeViewModel {
     
     var genres: Set<String> = []
+    var recommendedTracks: [AudioTrack] = []
     
     func fetchData(completion: @escaping (Result<([AudioTrack], [Album]), Error>) -> Void) {
         
@@ -26,7 +27,7 @@ class HomeViewModel {
             }
             switch result {
             case .success(let response):
-                recommendedSongs = response.tracks
+                self.recommendedTracks = response.tracks
             case .failure(let error):
                 completion(.failure(error))
             }

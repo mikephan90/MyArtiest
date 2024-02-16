@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            if !UserDefaults.standard.bool(forKey: "first_login") {
 //                window.rootViewController = SelectGenreViewController()
 //            } else {
-                window.rootViewController = PlayerViewController()
+                window.rootViewController = TabBarViewController()
 //            }
         } else {
             // need to have welcome/onboarding screen first. if local selected genre is there, take to main
