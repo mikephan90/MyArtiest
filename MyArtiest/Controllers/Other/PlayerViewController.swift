@@ -8,13 +8,21 @@
 import UIKit
 import SDWebImage
 
+protocol PlayerViewControllerDelegate: AnyObject {
+    func didTapPlayPause()
+    func didTapNext()
+    func didTapBack()
+}
+
 class PlayerViewController: UIViewController {
     
     // MARK: - Properties
     
     private let viewModel = PlayerViewModel()
     private let controlsView = PlayerControlsView()
-    private var selectedTrack: AudioTrack
+    
+    weak var dataSource: PlayerDataSource?
+    weak var delegate: PlayerViewControllerDelegate?
     
     // MARK: - Views
     
@@ -50,39 +58,18 @@ class PlayerViewController: UIViewController {
         return imageView
     }()
     
-    // MARK: -  Init
-    
-    init(selectedTrack: AudioTrack) {
-        self.selectedTrack = selectedTrack
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-//        fetchTrack()
     }
     
     // MARK: - UI
-    
-    private func songData() {
-        if let artistName = selectedTrack.artists.first?.name {
-            controlsView.configure(with: SongCellViewModel(
-                backgroundImage: nil,
-                name: selectedTrack.name,
-                artist: artistName)
-            )
-        }
-    }
+
     
     private func setupUI() {
-        tabBarController?.tabBar.isHidden = true
         backgroundImageView.frame = view.bounds
         overlayView.frame = view.bounds
         
@@ -129,40 +116,34 @@ class PlayerViewController: UIViewController {
     
     // MARK: - Fetch Track Data
     
-    private func fetchTrack() {
-        viewModel.fetchTrack(track: selectedTrack) { [weak self] result in
-            guard let self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let track):
-                    // play the song with the fetched data
-                    self.update()
-                case.failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        }
+    private func configure() {
+        backgroundImageView.sd_setImage(with: dataSource?.imageUrl, completed: nil)
+        mainImageView.sd_setImage(with: dataSource?.imageUrl, completed: nil)
+        controlsView.configure(with: SongCellViewModel(
+            backgroundImage: nil,
+            name: dataSource?.songName ?? "",
+            artist: dataSource?.artistName ?? ""
+        ))
+    }
+    
+    func refreshUI() {
+        configure()
     }
     
     // MARK: - Methods
     
-    private func update() {
-//        if let imageURL = selectedTrack.album?.images.first?.url {
-//            backgroundImageView.sd_setImage(with: URL(string: imageURL), completed: nil)
-//            mainImageView.sd_setImage(with: URL(string: imageURL), completed: nil)
-//        }
+}
+
+extension PlayerViewController: PlayerViewControllerDelegate {
+    func didTapPlayPause() {
+        delegate?.didTapPlayPause()
     }
     
-    //    private func configureBarButtons() {
-    //        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapClose))
-    //        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapAction))
-    //    }
-    //
-    //    @objc private func didTapClose() {
-    //        dismiss(animated: true, completion: nil)
-    //    }
-    //
-    //    @objc private func didTapAction() {
-    //
-    //    }
+    func didTapNext() {
+        delegate?.didTapNext()
+    }
+    
+    func didTapBack() {
+        delegate?.didTapBack()
+    }
 }

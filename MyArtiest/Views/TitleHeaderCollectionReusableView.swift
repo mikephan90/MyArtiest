@@ -71,8 +71,7 @@ class TitleHeaderCollectionReusableView: UICollectionReusableView {
     
     func configure(with title: String, _ addArtistSection: Bool = false) {
         labelText.text = title
-        
-        print(addArtistSection)
+
         self.addArtist = addArtistSection
     }
 }

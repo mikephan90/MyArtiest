@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B19CAD292B801CED009671FF /* PlaybackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19CAD282B801CED009671FF /* PlaybackPresenter.swift */; };
 		B1CFFF6F2B79FB0F00229CF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF6E2B79FB0F00229CF1 /* AppDelegate.swift */; };
 		B1CFFF712B79FB0F00229CF1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF702B79FB0F00229CF1 /* SceneDelegate.swift */; };
 		B1CFFF732B79FB0F00229CF1 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF722B79FB0F00229CF1 /* HomeViewController.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B19CAD282B801CED009671FF /* PlaybackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackPresenter.swift; sourceTree = "<group>"; };
 		B1CFFF6B2B79FB0F00229CF1 /* MyArtiest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyArtiest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1CFFF6E2B79FB0F00229CF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B1CFFF702B79FB0F00229CF1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +104,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B19CAD262B801CCE009671FF /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				B19CAD282B801CED009671FF /* PlaybackPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
 		B1CFFF622B79FB0F00229CF1 = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +132,7 @@
 		B1CFFF6D2B79FB0F00229CF1 /* MyArtiest */ = {
 			isa = PBXGroup;
 			children = (
+				B19CAD262B801CCE009671FF /* Presenter */,
 				B1CFFF872B79FC6200229CF1 /* Managers */,
 				B1CFFF852B79FC5600229CF1 /* Models */,
 				B1CFFF832B79FC4B00229CF1 /* Views */,
@@ -320,6 +331,7 @@
 				B1CFFFDB2B7E6F6100229CF1 /* PlayerControlsView.swift in Sources */,
 				B1CFFF992B7A867800229CF1 /* SelectGenreViewController.swift in Sources */,
 				B1CFFF732B79FB0F00229CF1 /* HomeViewController.swift in Sources */,
+				B19CAD292B801CED009671FF /* PlaybackPresenter.swift in Sources */,
 				B1CFFFC22B7C21D000229CF1 /* Artist.swift in Sources */,
 				B1CFFFBC2B7C1CA800229CF1 /* AudioTrack.swift in Sources */,
 				B1CFFFA92B7ABF7F00229CF1 /* AuthViewModel.swift in Sources */,

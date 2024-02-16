@@ -71,7 +71,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating, UISearchBar
     private func setupUI() {
         view.backgroundColor = .customBackground
         title = "Home"
-//        navigationController?.isNavigationBarHidden = true
+        tabBarController?.tabBar.isHidden = false
         
         collectionView = UICollectionView(
             frame: view.bounds,
@@ -220,7 +220,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating, UISearchBar
                 case .success(let response):
                     self.newReleaseAlbums = response.1
                     self.configureModels()
-//                    self.collectionView.reloadData()
+                    self.collectionView.reloadData()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -325,9 +325,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        // add per seciton for now just do recommended
         let track = viewModel.recommendedTracks[indexPath.row]
-        let vc = PlayerViewController(selectedTrack: track)
-        navigationController?.pushViewController(vc, animated: true)
+        PlaybackPresenter.shared.startPlayback(from: self, track: track)
     }
 }

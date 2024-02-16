@@ -7,9 +7,17 @@
 
 import UIKit
 
+protocol PlayerControlsViewDelegate: AnyObject {
+    func viewDidTapPlayPause(_ playerControlView: PlayerControlsView)
+    func viewDidTapNext(_ playerControlView: PlayerControlsView)
+    func viewDidTapBack(_ playerControlView: PlayerControlsView)
+}
+
 class PlayerControlsView: UIView {
     
     // MARK: - Properties
+    
+    weak var delegate: PlayerControlsViewDelegate?
     
     // MARK: - Views
     
