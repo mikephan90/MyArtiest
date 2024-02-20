@@ -5,7 +5,9 @@
 //  Created by Mike Phan on 2/12/24.
 //
 
+import Foundation
 import UIKit
+import CoreData
 
 class HomeViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate {
     
@@ -64,6 +66,38 @@ class HomeViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         super.viewDidLoad()
         setupUI()
         fetchData()
+        
+        // save genres to core data manually for now
+        saveToCoreData()
+    }
+    
+    // SAVE GENRES TO CORE DATA.
+    func saveToCoreData() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        // Need to create user after login/onbaording screen
+        let newUser = User(context: context)
+        
+        for genreName in genres {
+            let newGenre = Genre(context: context)
+            newGenre.name = genreName
+            newUser.addToGenres(newGenre)
+        }
+        
+        do {
+            try context.save()
+            print("genres saved")
+        } catch {
+            print("error saving genres")
+        }
+        
+        // Fetch and print saved genres (optional)
+            if let savedGenres = newUser.genres {
+                for genre in savedGenres {
+                    print("\((genre as AnyObject).name ?? "")")
+                }
+            }
     }
     
     // MARK: - UI
@@ -324,8 +358,17 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        let track = viewModel.recommendedTracks[indexPath.row]
-        PlaybackPresenter.shared.startPlayback(from: self, track: track)
+        let type = sections[indexPath.section]
+        switch type {
+        case .recommendedSongs(let viewModels):
+            let track = viewModel.recommendedTracks[indexPath.row]
+            PlaybackPresenter.shared.startPlayback(from: self, track: track)
+        case .newAlbums(let viewModels):
+            let albumId = self.newReleaseAlbums[indexPath.row].id
+            let vc = AlbumViewController(albumId: albumId)
+            navigationController?.pushViewController(vc, animated: false)
+        case .favoriteArtists(let viewModels):
+            break
+        }
     }
 }

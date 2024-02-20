@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B10795082B83F4AE00929FF7 /* MyArtiestDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B10795062B83F4AE00929FF7 /* MyArtiestDataModel.xcdatamodeld */; };
+		B107950A2B84823700929FF7 /* ObservableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10795092B84823700929FF7 /* ObservableObject.swift */; };
 		B19CAD292B801CED009671FF /* PlaybackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19CAD282B801CED009671FF /* PlaybackPresenter.swift */; };
+		B19CAD2D2B81762A009671FF /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19CAD2C2B81762A009671FF /* AlbumViewController.swift */; };
+		B19CAD2F2B817653009671FF /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19CAD2E2B817653009671FF /* AlbumViewModel.swift */; };
 		B1CFFF6F2B79FB0F00229CF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF6E2B79FB0F00229CF1 /* AppDelegate.swift */; };
 		B1CFFF712B79FB0F00229CF1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF702B79FB0F00229CF1 /* SceneDelegate.swift */; };
 		B1CFFF732B79FB0F00229CF1 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFF722B79FB0F00229CF1 /* HomeViewController.swift */; };
@@ -49,7 +53,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B10795072B83F4AE00929FF7 /* UserDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserDataModel.xcdatamodel; sourceTree = "<group>"; };
+		B10795092B84823700929FF7 /* ObservableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableObject.swift; sourceTree = "<group>"; };
 		B19CAD282B801CED009671FF /* PlaybackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackPresenter.swift; sourceTree = "<group>"; };
+		B19CAD2C2B81762A009671FF /* AlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
+		B19CAD2E2B817653009671FF /* AlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
 		B1CFFF6B2B79FB0F00229CF1 /* MyArtiest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyArtiest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1CFFF6E2B79FB0F00229CF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B1CFFF702B79FB0F00229CF1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -147,10 +155,12 @@
 		B1CFFF822B79FC4500229CF1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B10795062B83F4AE00929FF7 /* MyArtiestDataModel.xcdatamodeld */,
 				B1CFFF772B79FB1000229CF1 /* Assets.xcassets */,
 				B1CFFF6E2B79FB0F00229CF1 /* AppDelegate.swift */,
 				B1CFFF702B79FB0F00229CF1 /* SceneDelegate.swift */,
 				B1CFFF962B7A080800229CF1 /* Extensions.swift */,
+				B10795092B84823700929FF7 /* ObservableObject.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -184,8 +194,8 @@
 			children = (
 				B1CFFFCC2B7C3D1400229CF1 /* Responses */,
 				B1CFFFBB2B7C1CA800229CF1 /* AudioTrack.swift */,
-				B1CFFFBD2B7C1CBC00229CF1 /* Album.swift */,
 				B1CFFFBF2B7C21BC00229CF1 /* APIImage.swift */,
+				B1CFFFBD2B7C1CBC00229CF1 /* Album.swift */,
 				B1CFFFC12B7C21D000229CF1 /* Artist.swift */,
 			);
 			path = Models;
@@ -200,6 +210,7 @@
 				B1CFFFAC2B7AC1D000229CF1 /* OnboardingViewModel.swift */,
 				B1CFFFAF2B7AC58000229CF1 /* SelectGenresViewModel.swift */,
 				B1CFFFDC2B7F17A700229CF1 /* PlayerViewModel.swift */,
+				B19CAD2E2B817653009671FF /* AlbumViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -231,6 +242,7 @@
 				B1CFFFA62B7ABF6E00229CF1 /* AuthViewController.swift */,
 				B1CFFFAA2B7AC08D00229CF1 /* OnboardingViewController.swift */,
 				B1CFFFD82B7D7F4D00229CF1 /* PlayerViewController.swift */,
+				B19CAD2C2B81762A009671FF /* AlbumViewController.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -334,7 +346,9 @@
 				B19CAD292B801CED009671FF /* PlaybackPresenter.swift in Sources */,
 				B1CFFFC22B7C21D000229CF1 /* Artist.swift in Sources */,
 				B1CFFFBC2B7C1CA800229CF1 /* AudioTrack.swift in Sources */,
+				B19CAD2F2B817653009671FF /* AlbumViewModel.swift in Sources */,
 				B1CFFFA92B7ABF7F00229CF1 /* AuthViewModel.swift in Sources */,
+				B19CAD2D2B81762A009671FF /* AlbumViewController.swift in Sources */,
 				B1CFFFCB2B7C3AFE00229CF1 /* TitleHeaderCollectionReusableView.swift in Sources */,
 				B1CFFFAB2B7AC08D00229CF1 /* OnboardingViewController.swift in Sources */,
 				B1CFFF8F2B79FFE300229CF1 /* HomeViewModel.swift in Sources */,
@@ -343,6 +357,7 @@
 				B1CFFF8B2B79FDFC00229CF1 /* ProfileViewController.swift in Sources */,
 				B1CFFF9D2B7AB64B00229CF1 /* GenreOptionCell.swift in Sources */,
 				B1CFFFD52B7D36DF00229CF1 /* AddNewArtistCollectionViewCell.swift in Sources */,
+				B10795082B83F4AE00929FF7 /* MyArtiestDataModel.xcdatamodeld in Sources */,
 				B1CFFF9F2B7ABCB400229CF1 /* APICaller.swift in Sources */,
 				B1CFFFC02B7C21BC00229CF1 /* APIImage.swift in Sources */,
 				B1CFFF912B7A01AB00229CF1 /* RecommendedSongCollectionViewCell.swift in Sources */,
@@ -355,6 +370,7 @@
 				B1CFFFA72B7ABF6E00229CF1 /* AuthViewController.swift in Sources */,
 				B1CFFFBE2B7C1CBC00229CF1 /* Album.swift in Sources */,
 				B1CFFFAD2B7AC1D000229CF1 /* OnboardingViewModel.swift in Sources */,
+				B107950A2B84823700929FF7 /* ObservableObject.swift in Sources */,
 				B1CFFFB02B7AC58000229CF1 /* SelectGenresViewModel.swift in Sources */,
 				B1CFFFA52B7ABF3C00229CF1 /* AuthResponse.swift in Sources */,
 				B1CFFFDD2B7F17A700229CF1 /* PlayerViewModel.swift in Sources */,
@@ -596,6 +612,19 @@
 			productName = SDWebImageMapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		B10795062B83F4AE00929FF7 /* MyArtiestDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B10795072B83F4AE00929FF7 /* UserDataModel.xcdatamodel */,
+			);
+			currentVersion = B10795072B83F4AE00929FF7 /* UserDataModel.xcdatamodel */;
+			path = MyArtiestDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B1CFFF632B79FB0F00229CF1 /* Project object */;
 }
