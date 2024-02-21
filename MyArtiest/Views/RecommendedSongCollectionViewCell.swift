@@ -77,7 +77,6 @@ class RecommendedSongCollectionViewCell: UICollectionViewCell {
         contentView.clipsToBounds = true
         contentView.layer.masksToBounds = true
         contentView.layer.cornerRadius = 10
-        addShadow()
         
         overlayView.frame = contentView.bounds
         

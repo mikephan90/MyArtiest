@@ -69,16 +69,16 @@ final class APICaller {
         }
     }
     
-    public func getAlbumTracks(albumId: String, completion: @escaping (Result<[AudioTrack], Error>) -> Void) {
+    public func getAlbumTracks(albumId: String, completion: @escaping (Result<AlbumTracksResponse, Error>) -> Void) {
         createRequest(with: URL(string: APIConstants.baseApiUrl + "/albums/\(albumId)/tracks"), type: .GET) { request in
             URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil else {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
-                
+            
                 do {
-                    let result = try JSONDecoder().decode([AudioTrack].self, from: data)
+                    let result = try JSONDecoder().decode(AlbumTracksResponse.self, from: data)
                     completion(.success(result))
                 } catch {
                     completion(.failure(error))

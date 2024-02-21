@@ -63,7 +63,7 @@ class NewAlbumCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
 
         let imageSize: CGFloat = contentView.width
-        addShadow()
+
      
         NSLayoutConstraint.activate([
             backgroundImage.topAnchor.constraint(equalTo: contentView.topAnchor),

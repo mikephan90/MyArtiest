@@ -364,9 +364,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let track = viewModel.recommendedTracks[indexPath.row]
             PlaybackPresenter.shared.startPlayback(from: self, track: track)
         case .newAlbums(let viewModels):
-            let albumId = self.newReleaseAlbums[indexPath.row].id
-            let vc = AlbumViewController(albumId: albumId)
-            navigationController?.pushViewController(vc, animated: false)
+            let album = self.newReleaseAlbums[indexPath.row]
+            let vc = AlbumViewController(album: album)
+            vc.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(vc, animated: true)
         case .favoriteArtists(let viewModels):
             break
         }

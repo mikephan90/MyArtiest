@@ -116,7 +116,6 @@ class PlayerControlsView: UIView {
         super.layoutSubviews()
         
         let controlsStackview = UIStackView()
-        //        controlsStackview.addShadow()
         
         controlsStackview.axis = .horizontal
         controlsStackview.alignment = .center
