@@ -193,7 +193,6 @@ class AlbumViewController: UIViewController {
             
             
             let section = NSCollectionLayoutSection(group: group)
-            //            section.orthogonalScrollingBehavior = .continuous
             section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 14, bottom: 20, trailing: 14)
             
             return section

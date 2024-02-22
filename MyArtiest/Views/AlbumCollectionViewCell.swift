@@ -12,7 +12,7 @@ class AlbumCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    static let identifier = "NewSongCollectionViewCell"
+    static let identifier = "AlbumCollectionViewCell"
     
     // MARK: - Views
     
@@ -64,6 +64,9 @@ class AlbumCollectionViewCell: UICollectionViewCell {
 
         let imageSize: CGFloat = contentView.width
 
+        backgroundImage.layer.borderWidth = 1
+        backgroundImage.layer.borderColor = UIColor.customPrimary.cgColor
+        backgroundImage.clipsToBounds = true
      
         NSLayoutConstraint.activate([
             backgroundImage.topAnchor.constraint(equalTo: contentView.topAnchor),

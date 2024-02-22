@@ -65,7 +65,7 @@ class RecommendedSongCollectionViewCell: UICollectionViewCell {
     // MARK: - UI
     
     private func setup() {
-        contentView.layer.borderWidth = 1.5
+        contentView.layer.borderWidth = 2
         contentView.layer.borderColor = UIColor.customPrimary.cgColor
         
         contentView.largeContentTitle = "New Releases"

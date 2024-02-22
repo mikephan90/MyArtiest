@@ -24,6 +24,7 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
     
     private let textLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 2
         
         return label
     }()
@@ -31,6 +32,7 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
     private let rightIconView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "chevron.right")
+        imageView.tintColor = UIColor.customPrimary
         
         return imageView
     }()
@@ -49,6 +51,12 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
     // MARK: - UI
     
     private func setupUI() {
+        
+        clipsToBounds = true
+        layer.cornerRadius = 10
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.customForeground.cgColor
+        
         addSubview(iconImageView)
         addSubview(textLabel)
         addSubview(rightIconView)
@@ -58,20 +66,23 @@ class SearchResultCollectionViewCell: UICollectionViewCell {
         rightIconView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            iconImageView.widthAnchor.constraint(equalToConstant: 20),
-            iconImageView.heightAnchor.constraint(equalToConstant: 20)
+            iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            iconImageView.widthAnchor.constraint(equalToConstant: 60),
+            iconImageView.heightAnchor.constraint(equalToConstant: 60),
+            iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
         
         NSLayoutConstraint.activate([
             textLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 30),
-            textLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 200)
+            textLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 200),
+            textLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            rightIconView.widthAnchor.constraint(equalToConstant: 16),
+            rightIconView.widthAnchor.constraint(equalToConstant: 10),
             rightIconView.heightAnchor.constraint(equalToConstant: 16),
-            rightIconView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+            rightIconView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            rightIconView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
         
     }

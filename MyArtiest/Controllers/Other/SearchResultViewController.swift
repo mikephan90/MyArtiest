@@ -44,7 +44,6 @@ class SearchResultViewController: UIViewController {
     // MARK: - UI
     
     private func setupUI() {
-        view.backgroundColor = .black
         
         collectionView = UICollectionView(
             frame: .zero,
@@ -57,6 +56,7 @@ class SearchResultViewController: UIViewController {
         // TODO: UpDTe
         collectionView.register(SearchResultCollectionViewCell.self, forCellWithReuseIdentifier: SearchResultCollectionViewCell.identifier)
         
+        collectionView.backgroundColor = .customBackground
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -71,6 +71,7 @@ class SearchResultViewController: UIViewController {
         ])
     }
     
+    // TODO: Instead of having a singular list, break this out into a tab section with these three sections in future enchanment
     private func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
         let supplementaryViews = [NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)),
@@ -81,8 +82,10 @@ class SearchResultViewController: UIViewController {
         switch section {
         case 0:
             let item = NSCollectionLayoutItem(
-                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
             )
+            
+            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
             
             let group = NSCollectionLayoutGroup.vertical(
                 layoutSize: NSCollectionLayoutSize(
@@ -94,11 +97,15 @@ class SearchResultViewController: UIViewController {
             
             let section = NSCollectionLayoutSection(group: group)
             section.boundarySupplementaryItems = supplementaryViews
+            section.interGroupSpacing = 10
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 40, trailing: 0)
+            
             return section
         case 1:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
             )
+            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
             
             let group = NSCollectionLayoutGroup.vertical(
                 layoutSize: NSCollectionLayoutSize(
@@ -110,11 +117,15 @@ class SearchResultViewController: UIViewController {
             
             let section = NSCollectionLayoutSection(group: group)
             section.boundarySupplementaryItems = supplementaryViews
+            section.interGroupSpacing = 10
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 40, trailing: 0)
+            
             return section
         case 2:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
             )
+            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
             
             let group = NSCollectionLayoutGroup.vertical(
                 layoutSize: NSCollectionLayoutSize(
@@ -126,6 +137,8 @@ class SearchResultViewController: UIViewController {
             
             let section = NSCollectionLayoutSection(group: group)
             section.boundarySupplementaryItems = supplementaryViews
+            section.interGroupSpacing = 10
+            
             return section
         default:
             let item = NSCollectionLayoutItem(
@@ -154,7 +167,6 @@ class SearchResultViewController: UIViewController {
         sections.append(.albums(viewModels: results.albums.items))
     
         collectionView.reloadData()
-//        collectionView.isHidden = !results
     }
 }
 
