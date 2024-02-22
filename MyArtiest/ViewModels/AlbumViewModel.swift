@@ -13,14 +13,41 @@ class AlbumViewModel {
     
     // MARK: - Methods
     
-    func fetchAlbumTracks(albumId: String, completion: @escaping (Result<AlbumTracksResponse, Error>) -> Void) {
+    func fetchData(albumId: String, artistId: String, completion: @escaping (Result<([AudioTrack], [Album]), Error>) -> Void) {
+        
+        let group = DispatchGroup()
+        group.enter()
+        group.enter()
+        
+        var tracks: [AudioTrack] = []
+        var albums: [Album] = []
+        
         APICaller.shared.getAlbumTracks(albumId: albumId) { result in
+            defer {
+                group.leave()
+            }
             switch result {
             case .success(let audioTracks):
-                completion(.success(audioTracks))
+                tracks = audioTracks.items
             case .failure(let error):
                 completion(.failure(error))
             }
+        }
+        
+        APICaller.shared.getArtistAlbums(artistId: artistId) { result in
+            defer {
+                group.leave()
+            }
+            switch result {
+            case .success(let artistAlbums):
+                albums = artistAlbums.items
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        
+        group.notify(queue: .main) {
+            completion(.success((tracks, albums)))
         }
     }
 }

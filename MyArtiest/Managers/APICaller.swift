@@ -76,13 +76,35 @@ final class APICaller {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
-            
+                
                 do {
                     let result = try JSONDecoder().decode(AlbumTracksResponse.self, from: data)
                     completion(.success(result))
                 } catch {
                     completion(.failure(error))
                 }
+            }.resume()
+        }
+    }
+    
+    public func getArtistAlbums(artistId: String, completion: @escaping (Result<ArtistAlbumResponse, Error>) -> Void) {
+        createRequest(with: URL(string: APIConstants.baseApiUrl + "/artists/\(artistId)/albums"), type: .GET) { request in
+            URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+//                    let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+//                    print(json)
+                    
+                    let result = try JSONDecoder().decode(ArtistAlbumResponse.self, from: data)
+                    completion(.success(result))
+                } catch {
+                    completion(.failure(error))
+                }
+                
             }.resume()
         }
     }

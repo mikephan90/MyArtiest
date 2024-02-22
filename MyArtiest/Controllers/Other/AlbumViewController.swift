@@ -14,12 +14,20 @@ class AlbumViewController: UIViewController {
     
     enum AlbumSectionType {
         case tracklist(viewModels: [AudioTrack])
-//        case relatedAlbums(viewModels: [SongCellViewModel])
+        case relatedAlbums(viewModels: [SongCellViewModel])
+        
+        var title: String {
+            switch self {
+            case .relatedAlbums: return "Other Albums by"
+            case .tracklist: return "Songs" // will not display
+            }
+        }
     }
     
     private var viewModel = AlbumViewModel()
     private var collectionView: UICollectionView!
     private var tracks: [AudioTrack] = []
+    private var albums: [Album] = []
     private let album: Album
     private var sections = [AlbumSectionType]()
     
@@ -81,8 +89,6 @@ class AlbumViewController: UIViewController {
         return label
     }()
     
-    // Display Collectionview of other albums
-    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -91,7 +97,10 @@ class AlbumViewController: UIViewController {
         configure()
         setupUI()
         setupGradientOverlay()
-        fetchData(albumId: album.id)
+        
+        if let artistId = album.artists.first?.id {
+            fetchData(albumId: album.id, artistId: artistId)
+        }
     }
     
     // MARK: - UI
@@ -107,8 +116,13 @@ class AlbumViewController: UIViewController {
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.showsVerticalScrollIndicator = false
         collectionView.backgroundColor = .customBackground
- 
+        
+        collectionView.register(
+            TitleHeaderCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TitleHeaderCollectionReusableView.identifier)
         collectionView.register(AlbumTrackCollectionViewCell.self, forCellWithReuseIdentifier: AlbumTrackCollectionViewCell.identifier)
+        collectionView.register(AlbumCollectionViewCell.self, forCellWithReuseIdentifier: AlbumCollectionViewCell.identifier)
         //        tabBarController?.tabBar.isHidden = true
         
         collectionView.delegate = self
@@ -239,12 +253,13 @@ class AlbumViewController: UIViewController {
         }
     }
     
-    private func fetchData(albumId: String) {
-        viewModel.fetchAlbumTracks(albumId: albumId) { [weak self] result in
+    private func fetchData(albumId: String, artistId: String) {
+        viewModel.fetchData(albumId: albumId, artistId: artistId) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let audioTracks):
-                    self?.tracks = audioTracks.items
+                case .success(let response):
+                    self?.tracks = response.0
+                    self?.albums = response.1
                     self?.configureModels()
                     self?.collectionView.reloadData()
                 case .failure(let error):
@@ -275,7 +290,13 @@ class AlbumViewController: UIViewController {
     private func configureModels() {
         sections.removeAll()
         sections.append(.tracklist(viewModels: tracks))
-//        sections.append(.relatedAlbums(viewModels: album))
+        sections.append(.relatedAlbums(viewModels: albums.compactMap {
+            return SongCellViewModel(
+                backgroundImage: URL(string: $0.images.first?.url ?? ""),
+                name: $0.name,
+                artist: $0.artists.first?.name ?? "-"
+            )
+        }))
     }
     
     private func configure() {
@@ -302,9 +323,33 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumTrackCollectionViewCell.identifier, for: indexPath) as? AlbumTrackCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            let track = tracks[indexPath.row]
-            cell.configure(with: track, index: indexPath.row)
+            
+            let index = indexPath.row
+            let track = tracks[index]
+            cell.configure(with: track, index: index + 1)
+            
+            return cell
+        case .relatedAlbums(viewModels: let viewModels):
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumCollectionViewCell.identifier, for: indexPath) as? AlbumCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            
+            let viewModel = viewModels[indexPath.row]
+            cell.configure(with: viewModel)
+    
             return cell
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleHeaderCollectionReusableView.identifier, for: indexPath) as? TitleHeaderCollectionReusableView else {
+            return UICollectionReusableView()
+        }
+        
+        let section = indexPath.section
+        let title = sections[section].title + " \(artistNameLabel.text!)"
+        header.configure(with: title)
+        
+        return header
     }
 }

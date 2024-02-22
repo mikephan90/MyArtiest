@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class NewAlbumCollectionViewCell: UICollectionViewCell {
+class AlbumCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     

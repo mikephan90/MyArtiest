@@ -115,7 +115,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         )
         
         collectionView.register(RecommendedSongCollectionViewCell.self, forCellWithReuseIdentifier: RecommendedSongCollectionViewCell.identifier)
-        collectionView.register(NewAlbumCollectionViewCell.self, forCellWithReuseIdentifier: NewAlbumCollectionViewCell.identifier)
+        collectionView.register(AlbumCollectionViewCell.self, forCellWithReuseIdentifier: AlbumCollectionViewCell.identifier)
         
         collectionView.register(FavoriteArtistCollectionViewCell.self, forCellWithReuseIdentifier: FavoriteArtistCollectionViewCell.identifier)
         collectionView.register(AddNewArtistCollectionViewCell.self, forCellWithReuseIdentifier: AddNewArtistCollectionViewCell.identifier)
@@ -314,7 +314,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             
             return cell
         case .newAlbums(let viewModels):
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewAlbumCollectionViewCell.identifier, for: indexPath) as? NewAlbumCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumCollectionViewCell.identifier, for: indexPath) as? AlbumCollectionViewCell else {
                 return UICollectionViewCell()
             }
             
