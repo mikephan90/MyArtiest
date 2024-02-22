@@ -35,7 +35,7 @@ final class APICaller {
     public func getGenres(completion: @escaping (Result<GenreResponse, Error>) -> Void) {
         createRequest(with: URL(string: APIConstants.baseApiUrl + "/recommendations/available-genre-seeds"), type: .GET) { request in
             URLSession.shared.dataTask(with: request) { data, _, error in
-                guard let data = data, error == nil else {
+                guard let data, error == nil else {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
@@ -54,7 +54,7 @@ final class APICaller {
     public func getNewAlbumReleases(completion: @escaping (Result<NewAlbumReleasesResponse, Error>) -> Void) {
         createRequest(with: URL(string: APIConstants.baseApiUrl + "/browse/new-releases?limit=50"), type: .GET) { request in
             URLSession.shared.dataTask(with: request) { data, _, error in
-                guard let data = data, error == nil else {
+                guard let data, error == nil else {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
@@ -72,7 +72,7 @@ final class APICaller {
     public func getAlbumTracks(albumId: String, completion: @escaping (Result<AlbumTracksResponse, Error>) -> Void) {
         createRequest(with: URL(string: APIConstants.baseApiUrl + "/albums/\(albumId)/tracks"), type: .GET) { request in
             URLSession.shared.dataTask(with: request) { data, _, error in
-                guard let data = data, error == nil else {
+                guard let data, error == nil else {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
@@ -90,15 +90,12 @@ final class APICaller {
     public func getArtistAlbums(artistId: String, completion: @escaping (Result<ArtistAlbumResponse, Error>) -> Void) {
         createRequest(with: URL(string: APIConstants.baseApiUrl + "/artists/\(artistId)/albums"), type: .GET) { request in
             URLSession.shared.dataTask(with: request) { data, _, error in
-                guard let data = data, error == nil else {
+                guard let data, error == nil else {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
                 
                 do {
-//                    let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-//                    print(json)
-                    
                     let result = try JSONDecoder().decode(ArtistAlbumResponse.self, from: data)
                     completion(.success(result))
                 } catch {
@@ -114,7 +111,7 @@ final class APICaller {
     public func getRecommendedTrack(track: AudioTrack, completion: @escaping (Result<AudioTrack, Error>) -> Void) {
         createRequest(with: URL(string: APIConstants.baseApiUrl + "/tracks/\(track.id)"), type: .GET) { request in
             URLSession.shared.dataTask(with: request) { data, _, error in
-                guard let data = data, error == nil else {
+                guard let data, error == nil else {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
@@ -132,7 +129,7 @@ final class APICaller {
         let seeds = genres.joined(separator: ",")
         createRequest(with: URL(string: APIConstants.baseApiUrl + "/recommendations?limit=10&seed_genres=\(seeds)"), type: .GET) { request in
             URLSession.shared.dataTask(with: request) { data, _, error in
-                guard let data = data, error == nil else {
+                guard let data, error == nil else {
                     completion(.failure(APIError.failedToGetData))
                     return
                 }
@@ -141,6 +138,35 @@ final class APICaller {
                     let result = try JSONDecoder().decode(RecommendedTrackResponse.self, from: data)
                     completion(.success(result))
                 } catch {
+                    completion(.failure(error))
+                }
+            }.resume()
+        }
+    }
+    
+    // MARK: - Search
+    
+    public func search(with query: String, completion: @escaping (Result<SearchResultResponse, Error>) -> Void) {
+        let limit = 20
+        let url = URL(string: APIConstants.baseApiUrl + "/search?limit=\(limit)&type=album,artist,track&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")")
+        
+        createRequest(with: url, type: .GET) { request in
+            URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let result = try JSONDecoder().decode(SearchResultResponse.self, from: data)
+                    
+                    let albums = result.albums.items
+                    let artists = result.artists.items
+                    let tracks = result.tracks.items
+                    
+                    completion(.success(result))
+                } catch {
+                    print(error.localizedDescription)
                     completion(.failure(error))
                 }
             }.resume()

@@ -12,6 +12,12 @@ class HomeViewModel {
     var genres: Set<String> = []
     var recommendedTracks: [AudioTrack] = []
     
+    func search(query: String, completion: @escaping (Result<SearchResultResponse, Error>) -> Void) {
+        APICaller.shared.search(with: query) { result in
+            completion(result)
+        }
+    }
+    
     func fetchData(completion: @escaping (Result<([AudioTrack], [Album]), Error>) -> Void) {
         
         let group = DispatchGroup()

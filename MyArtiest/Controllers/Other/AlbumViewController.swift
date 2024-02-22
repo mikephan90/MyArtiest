@@ -44,13 +44,6 @@ class AlbumViewController: UIViewController {
     
     // MARK: - Views
     
-    // TopImage / Album iamge
-    // Album name: Artist
-    
-    // list of tracks that can be pressable
-    // just do a long list now, do accordian style later.
-    // bottom display other related albums by artist
-    
     private var topImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -112,8 +105,7 @@ class AlbumViewController: UIViewController {
                 return self.createSectionLayout(section: sectionIndex)
             }
         )
-        
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+    
         collectionView.showsVerticalScrollIndicator = false
         collectionView.backgroundColor = .customBackground
         
@@ -123,8 +115,7 @@ class AlbumViewController: UIViewController {
             withReuseIdentifier: TitleHeaderCollectionReusableView.identifier)
         collectionView.register(AlbumTrackCollectionViewCell.self, forCellWithReuseIdentifier: AlbumTrackCollectionViewCell.identifier)
         collectionView.register(AlbumCollectionViewCell.self, forCellWithReuseIdentifier: AlbumCollectionViewCell.identifier)
-        //        tabBarController?.tabBar.isHidden = true
-        
+
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -319,7 +310,7 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
         
         let type = sections[indexPath.section]
         switch type {
-        case .tracklist(viewModels: let viewModels):
+        case .tracklist:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumTrackCollectionViewCell.identifier, for: indexPath) as? AlbumTrackCollectionViewCell else {
                 return UICollectionViewCell()
             }
@@ -329,7 +320,7 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
             cell.configure(with: track, index: index + 1)
             
             return cell
-        case .relatedAlbums(viewModels: let viewModels):
+        case .relatedAlbums(let viewModels):
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumCollectionViewCell.identifier, for: indexPath) as? AlbumCollectionViewCell else {
                 return UICollectionViewCell()
             }

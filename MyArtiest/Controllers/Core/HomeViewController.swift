@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class HomeViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate {
+class HomeViewController: UIViewController, UISearchResultsUpdating {
     
     // MARK: - Enum
     
@@ -43,7 +43,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating, UISearchBar
     }()
     
     let searchController: UISearchController = {
-        let vc = UISearchController(searchResultsController: HistoryViewController())
+        let vc = UISearchController(searchResultsController: SearchResultViewController())
         vc.searchBar.placeholder = "Songs or Artists"
         vc.searchBar.searchBarStyle = .prominent
 //        vc.searchBar.layer.borderWidth = 1
@@ -132,8 +132,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating, UISearchBar
         
         view.addSubview(collectionView)
         
-        // Temp until signout is implemented
-        UserDefaults.standard.removeObject(forKey: "first_login")
+       // check if genre has data
     }
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -372,4 +371,35 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             break
         }
     }
+}
+
+extension HomeViewController: UISearchBarDelegate, SearchResultViewControllerDelegate {
+    func showResult(_ controller: UIViewController) {
+        controller.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func didTapResult(_ result: SearchResult) {
+        //
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let resultsController = searchController.searchResultsController as? SearchResultViewController,
+              let query = searchController.searchBar.text,
+              !query.trimmingCharacters(in: .whitespaces).isEmpty else {
+            return
+        }
+        
+        viewModel.search(query: query) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let results):
+                    resultsController.update(with: results)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
 }
