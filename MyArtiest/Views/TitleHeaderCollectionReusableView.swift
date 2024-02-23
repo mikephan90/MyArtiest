@@ -7,12 +7,17 @@
 
 import UIKit
 
+protocol TitleHeaderCollectionReusableViewDelegate: AnyObject {
+    func didTapAddNewFavoriteArtist()
+}
+
 class TitleHeaderCollectionReusableView: UICollectionReusableView {
     
     // MARK: - Properties
     
     static let identifier = "TitleHeaderCollectionReusableView"
     private var addArtist: Bool!
+    weak var delegate: TitleHeaderCollectionReusableViewDelegate?
     
     // MARK: - Views
     
@@ -66,7 +71,7 @@ class TitleHeaderCollectionReusableView: UICollectionReusableView {
     // MARK: - Methods
     
     @objc func addNewArtistButtonPressed() {
-        print("pressed")
+        delegate?.didTapAddNewFavoriteArtist()
     }
     
     func configure(with title: String, _ addArtistSection: Bool = false) {

@@ -9,6 +9,7 @@
     </entity>
     <entity name="FavoriteArtist" representedClassName="FavoriteArtist" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="spotifyId" optional="YES" attributeType="String"/>
         <relationship name="albums" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteAlbum"/>
         <relationship name="songs" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteSong"/>
     </entity>

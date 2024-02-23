@@ -95,9 +95,9 @@ class AlbumCollectionViewCell: UICollectionViewCell {
         artistNameLabel.text = nil
     }
     
-    func configure(with viewModel: SongCellViewModel) {
-        backgroundImage.sd_setImage(with: viewModel.backgroundImage)
+    func configure(with viewModel: Album) {
+        backgroundImage.sd_setImage(with: URL(string: viewModel.images.first?.url ?? ""))
         albumNameLabel.text = viewModel.name
-        artistNameLabel.text = viewModel.artist
+        artistNameLabel.text = viewModel.artists.first?.name
     }
 }

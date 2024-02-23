@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+struct ArtistTracksResponse: Codable {
+    let tracks: [AudioTrack]
+}

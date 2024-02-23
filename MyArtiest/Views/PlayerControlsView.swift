@@ -86,6 +86,8 @@ class PlayerControlsView: UIView {
         return button
     }()
     
+    // Add menu button to Go to Artist/Album pages and Save artist button
+    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -104,8 +106,6 @@ class PlayerControlsView: UIView {
         
         addSubview(songNameLabel)
         addSubview(artistNameLabel)
-        
-        
         
         clipsToBounds = true
     }

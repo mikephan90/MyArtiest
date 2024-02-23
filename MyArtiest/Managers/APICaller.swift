@@ -49,6 +49,45 @@ final class APICaller {
         }
     }
     
+    // MARK: - Artists
+    
+    public func getArtistInfo(artistId: String, completion: @escaping (Result<Artist, Error>) -> Void) {
+        let id = "0du5cEVh5yTK9QJze8zA0C"
+        createRequest(with: URL(string: APIConstants.baseApiUrl + "/artists/\(id)"), type: .GET) { request in
+            URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let result = try JSONDecoder().decode(Artist.self, from: data)
+                    completion(.success(result))
+                } catch {
+                    completion(.failure(error))
+                }
+            }.resume()
+        }
+    }
+    
+    public func getArtistTracks(artistId: String, completion: @escaping (Result<[AudioTrack], Error>) -> Void) {
+        createRequest(with: URL(string: APIConstants.baseApiUrl + "/artists/\(artistId)/top-tracks?market=US"), type: .GET) { request in
+            URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let result = try JSONDecoder().decode(ArtistTracksResponse.self, from: data)
+                    completion(.success(result.tracks))
+                } catch {
+                    completion(.failure(error))
+                }
+            }.resume()
+        }
+    }
+    
     // MARK: - Albums
     
     public func getNewAlbumReleases(completion: @escaping (Result<NewAlbumReleasesResponse, Error>) -> Void) {
@@ -87,7 +126,7 @@ final class APICaller {
         }
     }
     
-    public func getArtistAlbums(artistId: String, completion: @escaping (Result<ArtistAlbumResponse, Error>) -> Void) {
+    public func getArtistAlbums(artistId: String, completion: @escaping (Result<[Album], Error>) -> Void) {
         createRequest(with: URL(string: APIConstants.baseApiUrl + "/artists/\(artistId)/albums"), type: .GET) { request in
             URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data, error == nil else {
@@ -97,7 +136,7 @@ final class APICaller {
                 
                 do {
                     let result = try JSONDecoder().decode(ArtistAlbumResponse.self, from: data)
-                    completion(.success(result))
+                    completion(.success(result.items))
                 } catch {
                     completion(.failure(error))
                 }

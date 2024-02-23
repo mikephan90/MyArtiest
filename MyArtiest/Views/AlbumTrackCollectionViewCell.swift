@@ -94,10 +94,6 @@ class AlbumTrackCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             trackNumberLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             trackNumberLabel.widthAnchor.constraint(equalToConstant: 20),
-            songNameLabel.leadingAnchor.constraint(equalTo: trackNumberLabel.trailingAnchor, constant: 50),
-            songNameLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 250),
-            moreIconButton.widthAnchor.constraint(equalToConstant: 40),
-            moreIconButton.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
     

@@ -14,7 +14,7 @@ class AlbumViewController: UIViewController {
     
     enum AlbumSectionType {
         case tracklist(viewModels: [AudioTrack])
-        case relatedAlbums(viewModels: [SongCellViewModel])
+        case relatedAlbums(viewModels: [Album])
         
         var title: String {
             switch self {
@@ -73,12 +73,6 @@ class AlbumViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .light)
         
-        return label
-    }()
-    
-    private var otherAlbumsHeadwerLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Albums"
         return label
     }()
     
@@ -159,8 +153,6 @@ class AlbumViewController: UIViewController {
             artistNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant:  20),
             artistNameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20)
         ])
-        
-       
     }
     
     private func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
@@ -180,7 +172,6 @@ class AlbumViewController: UIViewController {
                 )
             )
             
-            
             let group = NSCollectionLayoutGroup.vertical(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
@@ -190,7 +181,6 @@ class AlbumViewController: UIViewController {
             )
             
             group.interItemSpacing = .fixed(10)
-            
             
             let section = NSCollectionLayoutSection(group: group)
             section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 14, bottom: 20, trailing: 14)
@@ -260,33 +250,20 @@ class AlbumViewController: UIViewController {
     }
     
     private func setupGradientOverlay() {
-        // Create a new gradient layer
         let gradientLayer = CAGradientLayer()
-        // Set the colors and locations for the gradient layer
         gradientLayer.colors = [UIColor.clear.cgColor, UIColor.customBackground.cgColor]
         gradientLayer.locations = [0.0, 0.33]
-        
-        // Set the start and end points for the gradient layer
         gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
-        
-        // Set the frame to the layer
         gradientLayer.frame = view.frame
-        
-        // Add the gradient layer as a sublayer to the background view
+
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
     private func configureModels() {
         sections.removeAll()
         sections.append(.tracklist(viewModels: tracks))
-        sections.append(.relatedAlbums(viewModels: albums.compactMap {
-            return SongCellViewModel(
-                backgroundImage: URL(string: $0.images.first?.url ?? ""),
-                name: $0.name,
-                artist: $0.artists.first?.name ?? "-"
-            )
-        }))
+        sections.append(.relatedAlbums(viewModels: albums))
     }
     
     private func configure() {
@@ -341,5 +318,17 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
         header.configure(with: title)
         
         return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let type = sections[indexPath.section]
+        switch type {
+        case .relatedAlbums(let viewModels):
+            let viewModel = viewModels[indexPath.row]
+            let vc = AlbumViewController(album: viewModel)
+            navigationController?.pushViewController(vc, animated: true)
+        case .tracklist(let viewModels):
+            break;
+        }
     }
 }

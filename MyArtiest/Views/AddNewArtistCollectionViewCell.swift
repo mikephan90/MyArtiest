@@ -7,11 +7,16 @@
 
 import UIKit
 
+protocol AddNewArtistCollectionViewCellDelegate: AnyObject {
+    func didTapAddNewFavoriteArtist()
+}
+
 class AddNewArtistCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Properties
     
     static let identifier = "AddNewArtistCollectionViewCell"
+    weak var delegate: AddNewArtistCollectionViewCellDelegate?
     
     // MARK: - Views
     
@@ -21,10 +26,11 @@ class AddNewArtistCollectionViewCell: UICollectionViewCell {
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 10
         button.contentHorizontalAlignment = .left
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0)
         button.tintColor = .customPrimary
         button.setTitleColor(UIColor.customPrimary, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.setTitle("Add New Artist", for: .normal)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         
         return button
     }()
@@ -67,7 +73,6 @@ class AddNewArtistCollectionViewCell: UICollectionViewCell {
         buttonImage.translatesAutoresizingMaskIntoConstraints = false
         artistButton.addTarget(self, action: #selector(addArtistButtonPressed), for: .touchUpInside)
         
-        
         NSLayoutConstraint.activate([
             artistButton.leadingAnchor.constraint(equalTo: leadingAnchor),
             artistButton.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -84,11 +89,8 @@ class AddNewArtistCollectionViewCell: UICollectionViewCell {
     // MARK: - Methods
     
     @objc func addArtistButtonPressed() {
-        print("pressed")
+        /** TODO: This will direct the user to the default search bar. Add listener to direct to the correct section/tab for artist. */
+        delegate?.didTapAddNewFavoriteArtist()
     }
-    
-    
-    func configure() {
-        artistButton.setTitle("Add New Artist", for: .normal)
-    }
+
 }

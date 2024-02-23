@@ -15,7 +15,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
     
     enum HomeSectionType {
         case recommendedSongs(viewModels: [SongCellViewModel])
-        case newAlbums(viewModels: [SongCellViewModel])
+        case newAlbums(viewModels: [Album])
         case favoriteArtists(viewModels: [String])
         
         var title: String {
@@ -46,8 +46,6 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
         let vc = UISearchController(searchResultsController: SearchResultViewController())
         vc.searchBar.placeholder = "Songs or Artists"
         vc.searchBar.searchBarStyle = .prominent
-//        vc.searchBar.layer.borderWidth = 1
-//        vc.searchBar.layer.borderColor = UIColor.customPrimary.cgColor
         vc.definesPresentationContext = true
         
         return vc
@@ -55,10 +53,8 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
     
     // get from local
     private var genres: Set<String> = ["hip-hop", "chill", "dubstep"]
-    private var favoriteArtists: Set<String> = ["Bruno Mars", "SLANDER", "NewJeans", "LE SSERAFIM"]
-    //    private var favoriteArtists: Set<String> = []
-    
-    // If empty, display empty cell
+    private var favoriteArtists: Set<String> = ["4PgleR09JVnm3zY1fW3XBA", "SLANDER", "NewJeans", "LE SSERAFIM"] // store this in core data with Name and ID
+//        private var favoriteArtists: Set<String> = []
     
     // MARK: - Lifecycle
     
@@ -270,13 +266,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
                 artist: $0.artists.first?.name ?? "-"
             )
         }))
-        sections.append(.newAlbums(viewModels: newReleaseAlbums.compactMap {
-            return SongCellViewModel(
-                backgroundImage: URL(string: $0.images.first?.url ?? ""),
-                name: $0.name,
-                artist: $0.artists.first?.name ?? "-"
-            )
-        }))
+        sections.append(.newAlbums(viewModels: newReleaseAlbums.compactMap { $0 }))
         sections.append(.favoriteArtists(viewModels: favoriteArtists.compactMap {
             return $0
         }))
@@ -326,14 +316,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddNewArtistCollectionViewCell.identifier, for: indexPath) as? AddNewArtistCollectionViewCell else {
                     return UICollectionViewCell()
                 }
-                
-                cell.configure()
+                cell.delegate = self
                 
                 return cell
             } else {
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteArtistCollectionViewCell.identifier, for: indexPath) as? FavoriteArtistCollectionViewCell else {
                     return UICollectionViewCell()
                 }
+                cell.delegate = self
                 
                 let viewModel = viewModel[indexPath.row]
                 cell.configure(with: viewModel)
@@ -359,16 +349,16 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let type = sections[indexPath.section]
         switch type {
-        case .recommendedSongs(let viewModels):
+        case .recommendedSongs:
             let track = viewModel.recommendedTracks[indexPath.row]
             PlaybackPresenter.shared.startPlayback(from: self, track: track)
-        case .newAlbums(let viewModels):
+        case .newAlbums:
             let album = self.newReleaseAlbums[indexPath.row]
             let vc = AlbumViewController(album: album)
             vc.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(vc, animated: true)
-        case .favoriteArtists(let viewModels):
-            break
+        case .favoriteArtists:
+            break;
         }
     }
 }
@@ -401,5 +391,16 @@ extension HomeViewController: UISearchBarDelegate, SearchResultViewControllerDel
             }
         }
     }
+}
+
+extension HomeViewController: FavoriteArtistCollectionViewCellDelegate, AddNewArtistCollectionViewCellDelegate, TitleHeaderCollectionReusableViewDelegate {
+    func didTapArtist(_ artistId: String) {
+        let vc = ArtistViewController(artistId: artistId)
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
     
+    func didTapAddNewFavoriteArtist() {
+        searchController.searchBar.becomeFirstResponder()
+    }
 }

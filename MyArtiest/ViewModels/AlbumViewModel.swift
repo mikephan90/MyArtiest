@@ -40,7 +40,7 @@ class AlbumViewModel {
             }
             switch result {
             case .success(let artistAlbums):
-                albums = artistAlbums.items
+                albums = artistAlbums
             case .failure(let error):
                 completion(.failure(error))
             }

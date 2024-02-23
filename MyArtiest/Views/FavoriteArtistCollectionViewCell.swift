@@ -7,11 +7,17 @@
 
 import UIKit
 
+protocol FavoriteArtistCollectionViewCellDelegate: AnyObject {
+    func didTapArtist(_ artistId: String)
+}
+
 class FavoriteArtistCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
     static let identifier = "FavoriteArtistCollectionViewCell"
+    private var artistId: String?
+    weak var delegate: FavoriteArtistCollectionViewCellDelegate?
     
     // MARK: - Views
     
@@ -21,10 +27,10 @@ class FavoriteArtistCollectionViewCell: UICollectionViewCell {
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 10
         button.contentHorizontalAlignment = .left
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0)
         button.tintColor = .customPrimary
         button.setTitleColor(UIColor.customPrimary, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         
         return button
     }()
@@ -85,8 +91,6 @@ class FavoriteArtistCollectionViewCell: UICollectionViewCell {
     // MARK: - Methods
     
     @objc func favoriteArtistPressed() {
-        print("pressed")
-        
         artistButton.backgroundColor = .customBackground
         artistButton.layer.borderWidth = 1
         artistButton.layer.borderColor = UIColor.customPrimary.cgColor
@@ -95,13 +99,14 @@ class FavoriteArtistCollectionViewCell: UICollectionViewCell {
             self.artistButton.layer.borderWidth = 0
             self.artistButton.layer.borderColor = nil
         }
-               
-        
-        // do query on this artist return tracks and albums
+
+        guard let artistId = self.artistId else { return }
+        delegate?.didTapArtist(artistId)
     }
     
     
     func configure(with name: String) {
+        self.artistId = name // change this to accept a viewmodel with name/id
         artistButton.setTitle(name, for: .normal)
     }
 }

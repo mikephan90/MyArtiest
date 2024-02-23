@@ -97,20 +97,13 @@ class PlayerViewController: UIViewController {
     
     
     private func setupGradientOverlay() {
-        // Create a new gradient layer
         let gradientLayer = CAGradientLayer()
-        // Set the colors and locations for the gradient layer
         gradientLayer.colors = [UIColor.customBackground.cgColor, UIColor.clear.cgColor, UIColor.customBackground.cgColor]
         gradientLayer.locations = [0.0, 0.2, 0.8]
-        
-        // Set the start and end points for the gradient layer
         gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
-        
-        // Set the frame to the layer
         gradientLayer.frame = view.frame
         
-        // Add the gradient layer as a sublayer to the background view
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
