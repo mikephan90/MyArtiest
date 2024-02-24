@@ -21,6 +21,7 @@ class FavoriteArtistCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Views
     
+    // TODO: Update this to use configuration instead
     private var artistButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .customForeground

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ArtistViewController: UIViewController {
     
@@ -49,6 +50,26 @@ class ArtistViewController: UIViewController {
     
     // MARK: - Views
     
+    private var addToFavoriteArtistsButton: UIButton = {
+        let button = UIButton(configuration: UIButton.Configuration.filled())
+        button.configuration?.baseBackgroundColor = .customPrimary
+        var buttonText = AttributedString.init("FAVORITE")
+        buttonText.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        button.configuration?.attributedTitle = buttonText
+        
+        return button
+    }()
+    
+    private var removeFromFavoriteArtistsButton: UIButton = {
+        let button = UIButton(configuration: UIButton.Configuration.filled())
+        button.configuration?.baseBackgroundColor = .customForeground
+        var buttonText = AttributedString.init("REMOVE")
+        buttonText.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        button.configuration?.attributedTitle = buttonText
+        
+        return button
+    }()
+    
     private var topImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -86,6 +107,7 @@ class ArtistViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.delegate = self
         
         fetchData(artistId: artistId)
         setupUI()
@@ -114,6 +136,8 @@ class ArtistViewController: UIViewController {
         view.addSubview(overlayView)
         view.addSubview(artistNameLabel)
         view.addSubview(collectionView)
+        // Display the remove from favs if already saved
+       
         
         topImageView.translatesAutoresizingMaskIntoConstraints = false
         artistNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -134,7 +158,6 @@ class ArtistViewController: UIViewController {
         
         collectionView.register(AlbumTrackCollectionViewCell.self, forCellWithReuseIdentifier: AlbumTrackCollectionViewCell.identifier)
         collectionView.register(AlbumCollectionViewCell.self, forCellWithReuseIdentifier: AlbumCollectionViewCell.identifier)
-        
     }
     
     private func collectionConstraints() {
@@ -158,6 +181,8 @@ class ArtistViewController: UIViewController {
             artistNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant:  20),
             artistNameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20)
         ])
+        
+     
     }
     
     private func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
@@ -268,6 +293,7 @@ class ArtistViewController: UIViewController {
                     self?.tracks = response.1
                     self?.albums = response.2
                     
+                    self?.checkIfAlreadyFavorite()
                     self?.visibleTracks = Array(self?.tracks.prefix(5) ?? [])
                     self?.configureModels()
                     self?.configure()
@@ -280,21 +306,52 @@ class ArtistViewController: UIViewController {
     
     }
     
+    @objc func addToFavorites() {
+        guard let artist else { return }
+        viewModel.saveToFavoriteArtist(artist: artist)
+    }
+    
+    @objc func removeFromFavorites() {
+        guard let artist = artist else { return }
+        viewModel.removeArtistFromFavorites(artistId: artistId)
+    }
+    
+    private func checkIfAlreadyFavorite() {
+        guard let artist else { return }
+        
+        viewModel.checkIfAlreadyFavorite(artist: artist) { isFavorite in
+            viewModel.isAlreadyFavorite = isFavorite
+        }
+        
+        if viewModel.isAlreadyFavorite {
+            addToFavoriteArtistsButton.removeFromSuperview()
+            view.addSubview(removeFromFavoriteArtistsButton)
+            removeFromFavoriteArtistsButton.addTarget(self, action: #selector(removeFromFavorites), for: .touchUpInside)
+            removeFromFavoriteArtistsButton.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                removeFromFavoriteArtistsButton.bottomAnchor.constraint(equalTo: topImageView.bottomAnchor, constant: -20),
+                removeFromFavoriteArtistsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            ])
+        } else {
+            removeFromFavoriteArtistsButton.removeFromSuperview()
+            view.addSubview(addToFavoriteArtistsButton)
+            addToFavoriteArtistsButton.addTarget(self, action: #selector(addToFavorites), for: .touchUpInside)
+            addToFavoriteArtistsButton.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                addToFavoriteArtistsButton.bottomAnchor.constraint(equalTo: topImageView.bottomAnchor, constant: -20),
+                addToFavoriteArtistsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            ])
+        }
+    }
+    
     private func setupGradientOverlay() {
-        // Create a new gradient layer
         let gradientLayer = CAGradientLayer()
-        // Set the colors and locations for the gradient layer
         gradientLayer.colors = [UIColor.clear.cgColor, UIColor.customBackground.cgColor]
         gradientLayer.locations = [0.0, 0.33]
-        
-        // Set the start and end points for the gradient layer
         gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
-        
-        // Set the frame to the layer
         gradientLayer.frame = view.frame
-        
-        // Add the gradient layer as a sublayer to the background view
+
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
@@ -390,5 +447,15 @@ extension ArtistViewController: ExpandFooterCollectionReusableViewDelegate {
         isExpanded = true
         visibleTracks = tracks
         collectionView.reloadData()
+    }
+}
+
+extension ArtistViewController: ArtistViewModelDelegate {
+    func didAddArtistToFavorites(artistId: String) {
+        checkIfAlreadyFavorite()
+    }
+    
+    func didRemoveArtistFromFavorites(artistId: String) {
+        checkIfAlreadyFavorite()
     }
 }

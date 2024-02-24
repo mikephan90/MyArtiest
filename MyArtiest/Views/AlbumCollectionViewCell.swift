@@ -40,7 +40,7 @@ class AlbumCollectionViewCell: UICollectionViewCell {
     private let artistNameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .light)
-        label.numberOfLines = 0
+        label.numberOfLines = 1
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -83,7 +83,8 @@ class AlbumCollectionViewCell: UICollectionViewCell {
         
         NSLayoutConstraint.activate([
             artistNameLabel.topAnchor.constraint(equalTo: albumNameLabel.bottomAnchor),
-            artistNameLabel.centerXAnchor.constraint(equalTo: backgroundImage.centerXAnchor)
+            artistNameLabel.centerXAnchor.constraint(equalTo: backgroundImage.centerXAnchor),
+            artistNameLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
         ])
         
     }

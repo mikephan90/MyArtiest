@@ -20,6 +20,7 @@ class AddNewArtistCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Views
     
+    // TODO: Update this to use configuration instead
     private var artistButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .customForeground
@@ -30,7 +31,6 @@ class AddNewArtistCollectionViewCell: UICollectionViewCell {
         button.setTitleColor(UIColor.customPrimary, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.setTitle("Add New Artist", for: .normal)
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         
         return button
     }()

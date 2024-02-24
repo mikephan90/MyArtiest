@@ -4,22 +4,23 @@
         <attribute name="desc" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="releaseYear" optional="YES" attributeType="String"/>
-        <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteArtist"/>
-        <relationship name="songs" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteSong"/>
+        <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteArtist" inverseName="albums" inverseEntity="FavoriteArtist"/>
+        <relationship name="songs" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteSong" inverseName="album" inverseEntity="FavoriteSong"/>
     </entity>
     <entity name="FavoriteArtist" representedClassName="FavoriteArtist" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="spotifyId" optional="YES" attributeType="String"/>
-        <relationship name="albums" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteAlbum"/>
-        <relationship name="songs" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteSong"/>
+        <relationship name="albums" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteAlbum" inverseName="artist" inverseEntity="FavoriteAlbum"/>
+        <relationship name="songs" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteSong" inverseName="artist" inverseEntity="FavoriteSong"/>
     </entity>
     <entity name="FavoriteSong" representedClassName="FavoriteSong" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteAlbum"/>
-        <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteArtist"/>
+        <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteAlbum" inverseName="songs" inverseEntity="FavoriteAlbum"/>
+        <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FavoriteArtist" inverseName="songs" inverseEntity="FavoriteArtist"/>
     </entity>
     <entity name="Genre" representedClassName="Genre" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="genres" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="genres" inverseEntity="User"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -28,6 +29,6 @@
         <attribute name="savedSongs" optional="YES" attributeType="String"/>
         <attribute name="theme" optional="YES" attributeType="String"/>
         <relationship name="favoriteArtists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FavoriteArtist"/>
-        <relationship name="genres" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Genre"/>
+        <relationship name="genres" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Genre" inverseName="genres" inverseEntity="Genre"/>
     </entity>
 </model>
