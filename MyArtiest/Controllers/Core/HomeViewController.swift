@@ -16,7 +16,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
     enum HomeSectionType {
         case recommendedSongs(viewModels: [SongCellViewModel])
         case newAlbums(viewModels: [Album])
-        case favoriteArtists(viewModels: [String])
+        case favoriteArtists(viewModels: [FavoriteArtist])
         
         var title: String {
             switch self {
@@ -248,6 +248,8 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
                 switch result {
                 case .success(let response):
                     self.newReleaseAlbums = response.1
+                    
+                    self.getFavoriteArtists()
                     self.configureModels()
                     self.collectionView.reloadData()
                 case .failure(let error):
@@ -267,9 +269,13 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
             )
         }))
         sections.append(.newAlbums(viewModels: newReleaseAlbums.compactMap { $0 }))
-        sections.append(.favoriteArtists(viewModels: favoriteArtists.compactMap {
+        sections.append(.favoriteArtists(viewModels: viewModel.favoriteArtists.compactMap {
             return $0
         }))
+    }
+    
+    private func getFavoriteArtists() {
+        viewModel.getFavoriteArtistsFromCoreData()
     }
 }
 
@@ -324,7 +330,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                     return UICollectionViewCell()
                 }
                 cell.delegate = self
-                
+                print(viewModel[indexPath.row])
                 let viewModel = viewModel[indexPath.row]
                 cell.configure(with: viewModel)
                 
@@ -338,9 +344,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return UICollectionReusableView()
         }
         
+        header.delegate = self
         let section = indexPath.section
         let title = sections[section].title
-        let isFavoriteArtistSection = favoriteArtists.count > 1 && section == 2
+        let isFavoriteArtistSection = viewModel.favoriteArtists.count > 0 && section == 2
         header.configure(with: title, isFavoriteArtistSection)
         
         return header

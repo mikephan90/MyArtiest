@@ -84,7 +84,6 @@ class SelectGenreViewController: UIViewController {
     @objc func didTapContinue() {
        
         // Save to local storage
-        print(selectedGenres)
         viewModel.saveSelectedGenres(selectedGenres)
         
         let mainVC = HomeViewController()

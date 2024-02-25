@@ -284,6 +284,32 @@ class ArtistViewController: UIViewController {
         }
     }
     
+    private func setupGradientOverlay() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.customBackground.cgColor]
+        gradientLayer.locations = [0.0, 0.33]
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
+        gradientLayer.frame = view.frame
+
+        view.layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
+    private func configureModels() {
+        sections.removeAll()
+        sections.append(.tracklist(viewModels: tracks))
+        sections.append(.relatedAlbums(viewModels: albums))
+    }
+    
+    private func configure() {
+        guard let artist else { return }
+        
+        artistNameLabel.text = artist.name
+        topImageView.sd_setImage(with: URL(string: artist.images?.first?.url ?? ""))
+    }
+    
+    // MARK: - Methods
+    
     private func fetchData(artistId: String) {
         viewModel.fetchArtistData(artistId: artistId) { [weak self] result in
             DispatchQueue.main.async {
@@ -342,30 +368,6 @@ class ArtistViewController: UIViewController {
                 addToFavoriteArtistsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
             ])
         }
-    }
-    
-    private func setupGradientOverlay() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.customBackground.cgColor]
-        gradientLayer.locations = [0.0, 0.33]
-        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
-        gradientLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
-        gradientLayer.frame = view.frame
-
-        view.layer.insertSublayer(gradientLayer, at: 0)
-    }
-    
-    private func configureModels() {
-        sections.removeAll()
-        sections.append(.tracklist(viewModels: tracks))
-        sections.append(.relatedAlbums(viewModels: albums))
-    }
-    
-    private func configure() {
-        guard let artist else { return }
-        
-        artistNameLabel.text = artist.name
-        topImageView.sd_setImage(with: URL(string: artist.images?.first?.url ?? ""))
     }
 }
 

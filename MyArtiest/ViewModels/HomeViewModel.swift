@@ -6,11 +6,20 @@
 //
 
 import Foundation
+import CoreData
+import UIKit
 
 class HomeViewModel {
     
+    // MARK: - Properties
+    
     var genres: Set<String> = []
     var recommendedTracks: [AudioTrack] = []
+    var favoriteArtists: [FavoriteArtist] = []
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let fetchRequest: NSFetchRequest<FavoriteArtist> = FavoriteArtist.fetchRequest()
+    
+    // MARK: - Methods
     
     func search(query: String, completion: @escaping (Result<SearchResultResponse, Error>) -> Void) {
         APICaller.shared.search(with: query) { result in
@@ -53,6 +62,19 @@ class HomeViewModel {
         
         group.notify(queue: .main) {
             completion(.success((recommendedSongs, newAlbums)))
+        }
+    }
+    
+    func getFavoriteArtistsFromCoreData() {
+        let context = appDelegate.persistentContainer.viewContext
+        
+        do {
+            let favoriteArtists = try context.fetch(fetchRequest)
+            for favoriteArtist in favoriteArtists {
+                self.favoriteArtists.append(favoriteArtist)
+            }
+        } catch {
+            print("Error fetching data: \(error)")
         }
     }
 }

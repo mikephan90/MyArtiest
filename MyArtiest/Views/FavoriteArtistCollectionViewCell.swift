@@ -106,8 +106,8 @@ class FavoriteArtistCollectionViewCell: UICollectionViewCell {
     }
     
     
-    func configure(with name: String) {
-        self.artistId = name // change this to accept a viewmodel with name/id
-        artistButton.setTitle(name, for: .normal)
+    func configure(with viewModel: FavoriteArtist) {
+        self.artistId = viewModel.name
+        artistButton.setTitle(viewModel.name, for: .normal)
     }
 }

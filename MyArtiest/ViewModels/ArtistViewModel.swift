@@ -88,15 +88,18 @@ final class ArtistViewModel {
             fatalError("Unable to find entity description in model")
         }
         
+        let user = User(context: context)
+      
+        
         do {
             let existingObjects = try context.fetch(fetchRequest)
             if existingObjects.first != nil {
                 print("An object with the same attribute value already exists")
             } else {
-                let managedObject = FavoriteArtist(entity: entity, insertInto: context)
-                
-                managedObject.spotifyId = artistId
-                managedObject.name = artist.name
+                let newArtist = FavoriteArtist(context: context)
+                newArtist.name = artist.name
+                newArtist.spotifyId = artistId
+                user.addToFavoriteArtists(newArtist)
                 
                 try context.save()
                 print("Successfully saved artist to favorites!")
