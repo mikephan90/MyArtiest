@@ -13,9 +13,11 @@ protocol PlayerControlsViewDelegate: AnyObject {
     func viewDidTapBack(_ playerControlView: PlayerControlsView)
 }
 
-class PlayerControlsView: UIView {
+final class PlayerControlsView: UIView {
     
     // MARK: - Properties
+    
+    private var isPlaying = true
     
     weak var delegate: PlayerControlsViewDelegate?
     
@@ -75,7 +77,7 @@ class PlayerControlsView: UIView {
     private let playPauseButton: UIButton = {
         let button = UIButton()
         let image = UIImage(
-            systemName: "play.circle.fill",
+            systemName: "pause.circle.fill",
             withConfiguration: UIImage.SymbolConfiguration(
                 pointSize: 70,
                 weight: .regular)
@@ -131,8 +133,11 @@ class PlayerControlsView: UIView {
         backButton.translatesAutoresizingMaskIntoConstraints = false
         playPauseButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.translatesAutoresizingMaskIntoConstraints = false
-        
         controlsStackview.translatesAutoresizingMaskIntoConstraints = false
+        
+        backButton.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
+        playPauseButton.addTarget(self, action: #selector(didTapPlayPause), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             songNameLabel.topAnchor.constraint(equalTo: topAnchor),
@@ -163,5 +168,30 @@ class PlayerControlsView: UIView {
     func configure(with viewModel: SongCellViewModel) {
         songNameLabel.text = viewModel.name
         artistNameLabel.text = viewModel.artist
+    }
+    
+    @objc private func didTapBack() {
+        delegate?.viewDidTapBack(self)
+    }
+    
+    @objc private func didTapNext() {
+        delegate?.viewDidTapNext(self)
+    }
+    
+    @objc private func didTapPlayPause() {
+        self.isPlaying = !isPlaying
+        delegate?.viewDidTapPlayPause(self)
+        
+        let play = UIImage(
+            systemName: "play.circle.fill",
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 70, weight: .regular)
+        )
+        let pause = UIImage(
+            systemName: "pause.circle.fill",
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 70, weight: .regular)
+        )
+            
+        // Update Icon
+        playPauseButton.setImage(isPlaying ? pause : play, for: .normal)
     }
 }

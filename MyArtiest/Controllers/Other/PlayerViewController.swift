@@ -63,6 +63,8 @@ class PlayerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        controlsView.delegate = self
         setupUI()
     }
     
@@ -127,16 +129,16 @@ class PlayerViewController: UIViewController {
     
 }
 
-extension PlayerViewController: PlayerViewControllerDelegate {
-    func didTapPlayPause() {
+extension PlayerViewController: PlayerControlsViewDelegate {
+    func viewDidTapPlayPause(_ playerControlView: PlayerControlsView) {
         delegate?.didTapPlayPause()
     }
     
-    func didTapNext() {
+    func viewDidTapNext(_ playerControlView: PlayerControlsView) {
         delegate?.didTapNext()
     }
     
-    func didTapBack() {
+    func viewDidTapBack(_ playerControlView: PlayerControlsView) {
         delegate?.didTapBack()
     }
 }

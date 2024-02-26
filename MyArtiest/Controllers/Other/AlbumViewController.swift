@@ -18,8 +18,8 @@ class AlbumViewController: UIViewController {
         
         var title: String {
             switch self {
-            case .relatedAlbums: return "Other Albums by"
-            case .tracklist: return "Track List"
+            case .relatedAlbums: return "Other Albums"
+            case .tracklist: return "Songs"
             }
         }
     }
@@ -374,7 +374,9 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
             let vc = AlbumViewController(album: viewModel)
             navigationController?.pushViewController(vc, animated: true)
         case .tracklist(let viewModels):
-            break;
+            tracks[indexPath.row].album = album
+            var track = tracks[indexPath.row]
+            PlaybackPresenter.shared.startPlayback(from: self, track: track)
         }
     }
 }

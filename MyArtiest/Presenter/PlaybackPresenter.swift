@@ -41,9 +41,11 @@ final class PlaybackPresenter {
         self.track = track
  
         guard let url = URL(string: track.preview_url ?? "") else { return }
+        audioPlayer = AVPlayer(url: url)
+        audioPlayer?.volume = getSystemOutputVolume()
         
         viewController.present(UINavigationController(rootViewController: vc), animated: true) { [weak self] in
-            // play song
+            self?.audioPlayer?.play()
         }
         vc.refreshUI()
         self.playerVC = vc
@@ -52,15 +54,21 @@ final class PlaybackPresenter {
 
 extension PlaybackPresenter: PlayerViewControllerDelegate {
     func didTapPlayPause() {
-        //
+        if let audioPlayer {
+            if audioPlayer.timeControlStatus == .paused {
+                audioPlayer.play()
+            } else if audioPlayer.timeControlStatus == .playing {
+                audioPlayer.pause()
+            }
+        }
     }
     
     func didTapNext() {
-        //
+        print("tapped Next")
     }
     
     func didTapBack() {
-        //
+        print("tapped back")
     }
     
     

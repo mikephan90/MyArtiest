@@ -248,7 +248,6 @@ class ArtistViewController: UIViewController {
             
             let headerView = supplementaryViews.first { $0.elementKind == UICollectionView.elementKindSectionHeader }
             section.boundarySupplementaryItems = [headerView].compactMap { $0 }
-            
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 60, trailing: 0)
             
             return section
@@ -415,7 +414,7 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleHeaderCollectionReusableView.identifier, for: indexPath) as? TitleHeaderCollectionReusableView else {
                 return UICollectionReusableView()
             }
-            let dynamicHeaderTitle = title
+            let dynamicHeaderTitle = title + " \(artist?.name ?? "this Artist")"
             headerView.configure(with: dynamicHeaderTitle)
             return headerView
         } else if kind == UICollectionView.elementKindSectionFooter {
@@ -440,7 +439,8 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
             vc.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(vc, animated: true)
         case .tracklist:
-            break
+            var track = tracks[indexPath.row]
+            PlaybackPresenter.shared.startPlayback(from: self, track: track)
         }
     }
 }

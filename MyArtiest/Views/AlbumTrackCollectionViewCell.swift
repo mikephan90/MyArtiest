@@ -76,7 +76,7 @@ class AlbumTrackCollectionViewCell: UICollectionViewCell {
         
         horizontalStackView.addArrangedSubview(trackNumberLabel)
         horizontalStackView.addArrangedSubview(songNameLabel)
-        horizontalStackView.addArrangedSubview(moreIconButton)
+//        horizontalStackView.addArrangedSubview(moreIconButton)
         horizontalStackView.spacing = 20
         
         trackNumberLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -87,7 +87,7 @@ class AlbumTrackCollectionViewCell: UICollectionViewCell {
 
         NSLayoutConstraint.activate([
             horizontalStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            horizontalStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            horizontalStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             horizontalStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
         
