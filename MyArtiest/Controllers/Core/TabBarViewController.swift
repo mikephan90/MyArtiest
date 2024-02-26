@@ -13,7 +13,7 @@ class TabBarViewController: UITabBarController {
         super.viewDidLoad()
         
         let vc1 = HomeViewController()
-        let vc2 = ProfileViewController()
+        let vc2 = SettingsViewController()
 //        let vc3 = HistoryViewController()
         
         let nav1 = UINavigationController(rootViewController: vc1)

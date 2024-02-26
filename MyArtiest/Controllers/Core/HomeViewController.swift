@@ -64,7 +64,17 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
 
         // save genres to core data manually for now
         saveToCoreData()
+        
     }
+//    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        if sections.count > 2 {
+//            getFavoriteArtists()
+//            collectionView.reloadSections(IndexSet(integer: 2))
+//        }
+//    }
+    
     
     func setBackButtonStyle() {
         let backButtonImage = UIImage(systemName: "arrowshape.backward.fill")?
