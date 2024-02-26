@@ -53,8 +53,6 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
     
     // get from local
     private var genres: Set<String> = ["hip-hop", "chill", "dubstep"]
-    private var favoriteArtists: Set<String> = ["4PgleR09JVnm3zY1fW3XBA", "SLANDER", "NewJeans", "LE SSERAFIM"] // store this in core data with Name and ID
-//        private var favoriteArtists: Set<String> = []
     
     // MARK: - Lifecycle
     
@@ -65,6 +63,12 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
         
         // save genres to core data manually for now
         saveToCoreData()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshView), name: .refreshHomeView, object: nil)
+    }
+    
+    @objc func refreshView() {
+        fetchData()
     }
     
     // SAVE GENRES TO CORE DATA.
@@ -106,7 +110,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
         collectionView = UICollectionView(
             frame: view.bounds,
             collectionViewLayout: UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
-                return HomeViewController.createSectionLayout(section: sectionIndex)
+                return self.createSectionLayout(section: sectionIndex)
             }
         )
         
@@ -135,7 +139,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
         // Required but not used. Future enhancement
     }
     
-    private static func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
+    private func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
         let supplementaryViews = [NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)),
             elementKind: UICollectionView.elementKindSectionHeader,
@@ -144,7 +148,6 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
         
         switch section {
         case 0:
-            // Create item, to a group, then into a section and return it
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0),
@@ -192,6 +195,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
             
             return section
         case 2:
+            let numberOfItems = viewModel.favoriteArtists.count
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
@@ -204,7 +208,7 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
             let group = NSCollectionLayoutGroup.vertical(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .absolute(300)
+                    heightDimension: .estimated(55 * CGFloat(numberOfItems))
                 ),
                 subitems: Array(repeating: item, count: 1)
             )
@@ -317,8 +321,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             cell.configure(with: viewModel)
             
             return cell
-        case .favoriteArtists(let viewModel):
-            if favoriteArtists.count < 1 {
+        case .favoriteArtists(let viewModels):
+            if viewModel.favoriteArtists.count < 1 {
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddNewArtistCollectionViewCell.identifier, for: indexPath) as? AddNewArtistCollectionViewCell else {
                     return UICollectionViewCell()
                 }
@@ -330,8 +334,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                     return UICollectionViewCell()
                 }
                 cell.delegate = self
-                print(viewModel[indexPath.row])
-                let viewModel = viewModel[indexPath.row]
+                let viewModel = viewModels[indexPath.row]
                 cell.configure(with: viewModel)
                 
                 return cell
@@ -376,8 +379,16 @@ extension HomeViewController: UISearchBarDelegate, SearchResultViewControllerDel
         navigationController?.pushViewController(controller, animated: true)
     }
     
-    func didTapResult(_ result: SearchResult) {
-        //
+    func didTapAlbumResult(_ album: Album) {
+        let vc = AlbumViewController(album: album)
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func didTapArtistResult(_ resultId: String) {
+        let vc = ArtistViewController(artistId: resultId)
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -386,6 +397,8 @@ extension HomeViewController: UISearchBarDelegate, SearchResultViewControllerDel
               !query.trimmingCharacters(in: .whitespaces).isEmpty else {
             return
         }
+        
+        resultsController.delegate = self
         
         viewModel.search(query: query) { result in
             DispatchQueue.main.async {
@@ -410,4 +423,8 @@ extension HomeViewController: FavoriteArtistCollectionViewCellDelegate, AddNewAr
     func didTapAddNewFavoriteArtist() {
         searchController.searchBar.becomeFirstResponder()
     }
+}
+
+extension Notification.Name {
+    static let refreshHomeView = Notification.Name("RefreshHomeView")
 }

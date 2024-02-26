@@ -18,9 +18,7 @@ final class ArtistViewModel {
     
     // MARK: - Properties
     
-    var isAlreadyFavorite: Bool = false
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    let fetchRequest: NSFetchRequest<FavoriteArtist> = FavoriteArtist.fetchRequest()
+    var isAlreadyFavorite: Bool?
     weak var delegate: ArtistViewModelDelegate?
     
     // MARK: - Methods
@@ -79,72 +77,18 @@ final class ArtistViewModel {
     }
     
     func saveToFavoriteArtist(artist: Artist) {
-        let artistId = String(artist.id)
-        let context = appDelegate.persistentContainer.viewContext
-        
-        fetchRequest.predicate = NSPredicate(format: "spotifyId == %@", artistId)
-        
-        guard let entity = NSEntityDescription.entity(forEntityName: "FavoriteArtist", in: context) else {
-            fatalError("Unable to find entity description in model")
-        }
-        
-        let user = User(context: context)
-      
-        
-        do {
-            let existingObjects = try context.fetch(fetchRequest)
-            if existingObjects.first != nil {
-                print("An object with the same attribute value already exists")
-            } else {
-                let newArtist = FavoriteArtist(context: context)
-                newArtist.name = artist.name
-                newArtist.spotifyId = artistId
-                user.addToFavoriteArtists(newArtist)
-                
-                try context.save()
-                print("Successfully saved artist to favorites!")
-            }
-        } catch {
-            print("Error saving artist to favorites: \(error)")
-        }
-        
-        delegate?.didAddArtistToFavorites(artistId: artistId)
+        AppDataManager.shared.addArtistToFavorites(artist: artist)
+        delegate?.didAddArtistToFavorites(artistId: artist.id)
     }
     
     func removeArtistFromFavorites(artistId: String) {
-        let context = appDelegate.persistentContainer.viewContext
-        fetchRequest.predicate = NSPredicate(format: "spotifyId == %@", artistId)
-        
-        do {
-            let existingObjects = try context.fetch(fetchRequest)
-            if let favoriteArtist = existingObjects.first {
-                context.delete(favoriteArtist)
-                try context.save()
-                print("Successfully removed artist from favorites!")
-            } else {
-                print("Artist not found in favorites.")
-            }
-        } catch {
-            print("Error removing artist from favorites: \(error)")
-        }
-        
+        AppDataManager.shared.removeArtistFromFavorites(artistId: artistId)
         delegate?.didRemoveArtistFromFavorites(artistId: artistId)
     }
     
     func checkIfAlreadyFavorite(artist: Artist, completion: (Bool) -> Void) {
-        let artistId = String(artist.id)
-        let context = appDelegate.persistentContainer.viewContext
-        do {
-            let existingObjects = try context.fetch(fetchRequest)
-            if existingObjects.first != nil {
-                self.isAlreadyFavorite = true
-                completion(true)
-            } else {
-                completion(false)
-            }
-        } catch {
-            print("Error saving artist to favorites: \(error)")
-            completion(false)
+        AppDataManager.shared.checkIfFavoriteExist(artist: artist) { result in
+            self.isAlreadyFavorite = result
         }
     }
 }

@@ -9,8 +9,7 @@ import Foundation
 import CoreData
 import UIKit
 
-class HomeViewModel {
-    
+class HomeViewModel: SearchResultViewControllerDelegate {
     // MARK: - Properties
     
     var genres: Set<String> = []
@@ -18,6 +17,7 @@ class HomeViewModel {
     var favoriteArtists: [FavoriteArtist] = []
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let fetchRequest: NSFetchRequest<FavoriteArtist> = FavoriteArtist.fetchRequest()
+    weak var searchResultDelegate: SearchResultViewControllerDelegate?
     
     // MARK: - Methods
     
@@ -67,7 +67,7 @@ class HomeViewModel {
     
     func getFavoriteArtistsFromCoreData() {
         let context = appDelegate.persistentContainer.viewContext
-        
+        self.favoriteArtists.removeAll()
         do {
             let favoriteArtists = try context.fetch(fetchRequest)
             for favoriteArtist in favoriteArtists {
@@ -76,5 +76,17 @@ class HomeViewModel {
         } catch {
             print("Error fetching data: \(error)")
         }
+    }
+    
+    func showResult(_ controller: UIViewController) {
+        //
+    }
+    
+    func didTapArtistResult(_ resultId: String) {
+        searchResultDelegate?.didTapArtistResult(resultId)
+    }
+    
+    func didTapAlbumResult(_ album: Album) {
+        searchResultDelegate?.didTapAlbumResult(album)
     }
 }

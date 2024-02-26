@@ -19,7 +19,7 @@ class AlbumViewController: UIViewController {
         var title: String {
             switch self {
             case .relatedAlbums: return "Other Albums by"
-            case .tracklist: return "Songs" // will not display
+            case .tracklist: return "Track List"
             }
         }
     }
@@ -27,6 +27,8 @@ class AlbumViewController: UIViewController {
     private var viewModel = AlbumViewModel()
     private var collectionView: UICollectionView!
     private var tracks: [AudioTrack] = []
+    private var visibleTracks: [AudioTrack] = []
+    private var isExpanded: Bool = false
     private var albums: [Album] = []
     private let album: Album
     private var sections = [AlbumSectionType]()
@@ -99,17 +101,12 @@ class AlbumViewController: UIViewController {
                 return self.createSectionLayout(section: sectionIndex)
             }
         )
-    
+        
         collectionView.showsVerticalScrollIndicator = false
         collectionView.backgroundColor = .customBackground
         
-        collectionView.register(
-            TitleHeaderCollectionReusableView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TitleHeaderCollectionReusableView.identifier)
-        collectionView.register(AlbumTrackCollectionViewCell.self, forCellWithReuseIdentifier: AlbumTrackCollectionViewCell.identifier)
-        collectionView.register(AlbumCollectionViewCell.self, forCellWithReuseIdentifier: AlbumCollectionViewCell.identifier)
-
+        registerCollectionViews()
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -127,6 +124,10 @@ class AlbumViewController: UIViewController {
         artistNameLabel.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
+        collectionConstraints()
+    }
+    
+    private func collectionConstraints() {
         NSLayoutConstraint.activate([
             topImageView.topAnchor.constraint(equalTo: view.topAnchor),
             topImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -155,12 +156,34 @@ class AlbumViewController: UIViewController {
         ])
     }
     
+    private func registerCollectionViews() {
+        collectionView.register(
+            TitleHeaderCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TitleHeaderCollectionReusableView.identifier)
+        collectionView.register(
+            ExpandFooterCollectionReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: ExpandFooterCollectionReusableView.identifier)
+        collectionView.register(AlbumTrackCollectionViewCell.self, forCellWithReuseIdentifier: AlbumTrackCollectionViewCell.identifier)
+        collectionView.register(AlbumCollectionViewCell.self, forCellWithReuseIdentifier: AlbumCollectionViewCell.identifier)
+    }
+    
     private func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
-        let supplementaryViews = [NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)),
-            elementKind: UICollectionView.elementKindSectionHeader,
-            alignment: .top
-        )]
+        let supplementaryViews = [
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)),
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top
+            ),
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .absolute(50),
+                    heightDimension: .absolute(30)),
+                elementKind: UICollectionView.elementKindSectionFooter,
+                alignment: .bottom
+            )
+        ]
         
         switch section {
         case 0:
@@ -185,6 +208,14 @@ class AlbumViewController: UIViewController {
             let section = NSCollectionLayoutSection(group: group)
             section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 14, bottom: 20, trailing: 14)
             
+            if !isExpanded && tracks.count > 5 {
+                let footerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
+                let footerSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: footerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
+                section.boundarySupplementaryItems = [supplementaryViews[0], footerSupplementary]
+            } else {
+                section.boundarySupplementaryItems = [supplementaryViews[0]]
+            }
+            
             return section
         case 1:
             let item = NSCollectionLayoutItem(
@@ -205,7 +236,8 @@ class AlbumViewController: UIViewController {
             
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .continuous
-            section.boundarySupplementaryItems = supplementaryViews
+            let headerView = supplementaryViews.first { $0.elementKind == UICollectionView.elementKindSectionHeader }
+            section.boundarySupplementaryItems = [headerView].compactMap { $0 }
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 60, trailing: 0)
             
             return section
@@ -227,7 +259,8 @@ class AlbumViewController: UIViewController {
             )
             
             let section = NSCollectionLayoutSection(group: group)
-            section.boundarySupplementaryItems = supplementaryViews
+            let headerView = supplementaryViews.first { $0.elementKind == UICollectionView.elementKindSectionHeader }
+            section.boundarySupplementaryItems = [headerView].compactMap { $0 }
             
             return section
         }
@@ -235,13 +268,15 @@ class AlbumViewController: UIViewController {
     
     private func fetchData(albumId: String, artistId: String) {
         viewModel.fetchData(albumId: albumId, artistId: artistId) { [weak self] result in
+            guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
-                    self?.tracks = response.0
-                    self?.albums = response.1
-                    self?.configureModels()
-                    self?.collectionView.reloadData()
+                    self.tracks = response.0
+                    self.albums = response.1
+                    self.visibleTracks = Array(self.tracks.prefix(5))
+                    self.configureModels()
+                    self.collectionView.reloadData()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -256,7 +291,7 @@ class AlbumViewController: UIViewController {
         gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
         gradientLayer.frame = view.frame
-
+        
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
@@ -275,7 +310,7 @@ class AlbumViewController: UIViewController {
 
 extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return tracks.count
+        return visibleTracks.count
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -303,21 +338,32 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
             
             let viewModel = viewModels[indexPath.row]
             cell.configure(with: viewModel)
-    
+            
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleHeaderCollectionReusableView.identifier, for: indexPath) as? TitleHeaderCollectionReusableView else {
-            return UICollectionReusableView()
+        if kind == UICollectionView.elementKindSectionHeader {
+            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleHeaderCollectionReusableView.identifier, for: indexPath) as? TitleHeaderCollectionReusableView else {
+                return UICollectionReusableView()
+            }
+            
+            let section = indexPath.section
+            let title = sections[section].title
+            header.configure(with: title)
+            
+            return header
+        } else if kind == UICollectionView.elementKindSectionFooter {
+            guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ExpandFooterCollectionReusableView.identifier, for: indexPath) as? ExpandFooterCollectionReusableView else {
+                return UICollectionReusableView()
+            }
+            
+            footerView.delegate = self
+            
+            return footerView
         }
-        
-        let section = indexPath.section
-        let title = sections[section].title + " \(artistNameLabel.text!)"
-        header.configure(with: title)
-        
-        return header
+        return UICollectionReusableView()
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -330,5 +376,13 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
         case .tracklist(let viewModels):
             break;
         }
+    }
+}
+
+extension AlbumViewController: ExpandFooterCollectionReusableViewDelegate {
+    func didTapExpandTrackList() {
+        isExpanded = true
+        visibleTracks = tracks
+        collectionView.reloadData()
     }
 }

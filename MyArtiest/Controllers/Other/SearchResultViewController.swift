@@ -9,7 +9,8 @@ import UIKit
 
 protocol SearchResultViewControllerDelegate: AnyObject {
     func showResult(_ controller: UIViewController)
-    func didTapResult(_ result: SearchResult)
+    func didTapArtistResult(_ resultId: String)
+    func didTapAlbumResult(_ album: Album)
 }
 
 class SearchResultViewController: UIViewController {
@@ -32,6 +33,7 @@ class SearchResultViewController: UIViewController {
     
     private var sections: [SearchResultType] = []
     private var collectionView: UICollectionView!
+    weak var delegate: SearchResultViewControllerDelegate?
     
     // MARK: - Lifecycle
     
@@ -185,6 +187,20 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return sections.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let type = sections[indexPath.section]
+        switch type {
+        case .tracks(let viewModels):
+            break
+        case .artists(let viewModels):
+            let artistId = viewModels[indexPath.row].id
+            delegate?.didTapArtistResult(artistId)
+        case .albums(let viewModels):
+            let album = viewModels[indexPath.row]
+            delegate?.didTapAlbumResult(album)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

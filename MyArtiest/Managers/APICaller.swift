@@ -52,8 +52,7 @@ final class APICaller {
     // MARK: - Artists
     
     public func getArtistInfo(artistId: String, completion: @escaping (Result<Artist, Error>) -> Void) {
-        let id = "0du5cEVh5yTK9QJze8zA0C"
-        createRequest(with: URL(string: APIConstants.baseApiUrl + "/artists/\(id)"), type: .GET) { request in
+        createRequest(with: URL(string: APIConstants.baseApiUrl + "/artists/\(artistId)"), type: .GET) { request in
             URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data, error == nil else {
                     completion(.failure(APIError.failedToGetData))

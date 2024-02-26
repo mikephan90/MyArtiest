@@ -25,13 +25,10 @@ class ArtistViewController: UIViewController {
     }
     
     private var viewModel = ArtistViewModel()
-    
     private var artistId: String
     private var artist: Artist?
-    
     private var collectionView: UICollectionView!
     private var isExpanded: Bool = false
-    
     private var tracks: [AudioTrack] = []
     private var visibleTracks: [AudioTrack] = []
     private var albums: [Album] = []
@@ -40,7 +37,7 @@ class ArtistViewController: UIViewController {
     // MARK: - Init
     
     init(artistId: String) {
-        self.artistId = "0du5cEVh5yTK9QJze8zA0C"
+        self.artistId = artistId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -95,14 +92,6 @@ class ArtistViewController: UIViewController {
         return label
     }()
     
-    private var expandButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "arrow.down"), for: .normal)
-        
-        
-        return button
-    }()
-    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -113,6 +102,13 @@ class ArtistViewController: UIViewController {
         setupUI()
         setupGradientOverlay()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.post(name: .refreshHomeView, object: nil)
+    }
+    
+    // MARK: - UI
     
     private func setupUI() {
         collectionView = UICollectionView(
@@ -136,8 +132,6 @@ class ArtistViewController: UIViewController {
         view.addSubview(overlayView)
         view.addSubview(artistNameLabel)
         view.addSubview(collectionView)
-        // Display the remove from favs if already saved
-       
         
         topImageView.translatesAutoresizingMaskIntoConstraints = false
         artistNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -181,8 +175,6 @@ class ArtistViewController: UIViewController {
             artistNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant:  20),
             artistNameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20)
         ])
-        
-     
     }
     
     private func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
@@ -274,7 +266,7 @@ class ArtistViewController: UIViewController {
                     widthDimension: .fractionalWidth(1.0),
                     heightDimension: .absolute(390)
                 ),
-                subitems: Array(repeating: item, count: 1)
+                subitems: [item]
             )
             
             let section = NSCollectionLayoutSection(group: group)
@@ -313,17 +305,20 @@ class ArtistViewController: UIViewController {
     private func fetchData(artistId: String) {
         viewModel.fetchArtistData(artistId: artistId) { [weak self] result in
             DispatchQueue.main.async {
+                guard let self else { return }
                 switch result {
                 case .success(let response):
-                    self?.artist = response.0
-                    self?.tracks = response.1
-                    self?.albums = response.2
+                    self.artist = response.0
+                    self.tracks = response.1
+                    self.albums = response.2
+                
+                    self.checkIfAlreadyFavorite()
+                    self.visibleTracks = Array(self.tracks.prefix(5))
+                    self.configureModels()
+                    self.configure()
+                    self.displayAddRemoveButton()
                     
-                    self?.checkIfAlreadyFavorite()
-                    self?.visibleTracks = Array(self?.tracks.prefix(5) ?? [])
-                    self?.configureModels()
-                    self?.configure()
-                    self?.collectionView.reloadData()
+                    self.collectionView.reloadData()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -335,11 +330,13 @@ class ArtistViewController: UIViewController {
     @objc func addToFavorites() {
         guard let artist else { return }
         viewModel.saveToFavoriteArtist(artist: artist)
+        self.fetchData(artistId: self.artistId)
+
     }
     
     @objc func removeFromFavorites() {
-        guard let artist = artist else { return }
         viewModel.removeArtistFromFavorites(artistId: artistId)
+        self.fetchData(artistId: self.artistId)
     }
     
     private func checkIfAlreadyFavorite() {
@@ -348,8 +345,12 @@ class ArtistViewController: UIViewController {
         viewModel.checkIfAlreadyFavorite(artist: artist) { isFavorite in
             viewModel.isAlreadyFavorite = isFavorite
         }
+    }
+    
+    private func displayAddRemoveButton() {
+        guard let favorited = viewModel.isAlreadyFavorite else { return }
         
-        if viewModel.isAlreadyFavorite {
+        if favorited {
             addToFavoriteArtistsButton.removeFromSuperview()
             view.addSubview(removeFromFavoriteArtistsButton)
             removeFromFavoriteArtistsButton.addTarget(self, action: #selector(removeFromFavorites), for: .touchUpInside)
@@ -438,7 +439,7 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
             let vc = AlbumViewController(album: viewModel)
             vc.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(vc, animated: true)
-        case .tracklist(let viewModels):
+        case .tracklist:
             break
         }
     }

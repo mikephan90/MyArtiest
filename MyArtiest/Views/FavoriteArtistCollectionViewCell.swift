@@ -105,9 +105,8 @@ class FavoriteArtistCollectionViewCell: UICollectionViewCell {
         delegate?.didTapArtist(artistId)
     }
     
-    
     func configure(with viewModel: FavoriteArtist) {
-        self.artistId = viewModel.name
+        self.artistId = viewModel.spotifyId
         artistButton.setTitle(viewModel.name, for: .normal)
     }
 }
