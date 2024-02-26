@@ -16,12 +16,22 @@ class OnboardingViewController: UIViewController {
     // MARK: - Views
     
     private let signInButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .white
-        button.setTitle("Sign In with Spotify", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        let button = UIButton(configuration: UIButton.Configuration.borderedProminent())
+        button.configuration?.baseBackgroundColor = .customPrimary
+        var buttonText = AttributedString.init("SIGN IN")
+        buttonText.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        button.configuration?.attributedTitle = buttonText
         
         return button
+    }()
+    
+    private let backgroundImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "albums")
+        imageView.layer.zPosition = -1
+        imageView.layer.opacity = 0.3
+        
+        return imageView
     }()
     
     private let label: UILabel = {
@@ -29,7 +39,7 @@ class OnboardingViewController: UIViewController {
         label.numberOfLines = 0
         label.textColor = .white
         label.textAlignment = .center
-        label.text = "Listen to millions of songs\non the go."
+        label.text = "Listen to millions of\nsongs using your \nSpotify account!"
         label.font = .systemFont(ofSize: 32, weight: .bold)
         
         return label
@@ -41,6 +51,7 @@ class OnboardingViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupViewModel()
+        setupGradientOverlay()
     }
     
     override func viewDidLayoutSubviews() {
@@ -51,9 +62,16 @@ class OnboardingViewController: UIViewController {
     // MARK: - UI
     
     private func setupUI() {
-        
         label.translatesAutoresizingMaskIntoConstraints = false
         signInButton.translatesAutoresizingMaskIntoConstraints = false
+        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
         
         NSLayoutConstraint.activate([
             signInButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -70,11 +88,12 @@ class OnboardingViewController: UIViewController {
     }
     
     private func setupViews() {
-        title = "Spotify"
-        view.backgroundColor = .systemGreen
+        title = "MyArtiest"
+        view.backgroundColor = .customBackground
         signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
         view.addSubview(label)
         view.addSubview(signInButton)
+        view.addSubview(backgroundImage)
     }
     
     private func setupViewModel() {
@@ -83,6 +102,21 @@ class OnboardingViewController: UIViewController {
                 self?.handleSignIn(success: success)
             }
         }
+    }
+    
+    private func setupGradientOverlay() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [
+            UIColor.customForeground.cgColor,
+            UIColor.clear.cgColor,
+            UIColor.customBackground.cgColor
+        ]
+        gradientLayer.locations = [0.0, 0.2, 0.8]
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
+        gradientLayer.frame = view.frame
+
+        view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
     // MARK: - Methods

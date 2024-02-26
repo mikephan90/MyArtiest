@@ -25,6 +25,7 @@
 		B10795302B8941BD00929FF7 /* ExpandFooterCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B107952F2B8941BD00929FF7 /* ExpandFooterCollectionReusableView.swift */; };
 		B10795322B8AF75E00929FF7 /* AppDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10795312B8AF75E00929FF7 /* AppDataManager.swift */; };
 		B10795342B8C36C400929FF7 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10795332B8C36C400929FF7 /* AudioManager.swift */; };
+		B10795382B8C44B000929FF7 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10795372B8C44B000929FF7 /* SettingsModel.swift */; };
 		B19CAD292B801CED009671FF /* PlaybackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19CAD282B801CED009671FF /* PlaybackPresenter.swift */; };
 		B19CAD2D2B81762A009671FF /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19CAD2C2B81762A009671FF /* AlbumViewController.swift */; };
 		B19CAD2F2B817653009671FF /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19CAD2E2B817653009671FF /* AlbumViewModel.swift */; };
@@ -87,6 +88,7 @@
 		B107952F2B8941BD00929FF7 /* ExpandFooterCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandFooterCollectionReusableView.swift; sourceTree = "<group>"; };
 		B10795312B8AF75E00929FF7 /* AppDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataManager.swift; sourceTree = "<group>"; };
 		B10795332B8C36C400929FF7 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		B10795372B8C44B000929FF7 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		B19CAD282B801CED009671FF /* PlaybackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackPresenter.swift; sourceTree = "<group>"; };
 		B19CAD2C2B81762A009671FF /* AlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
 		B19CAD2E2B817653009671FF /* AlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				B10795112B85827E00929FF7 /* Tracklist.swift */,
 				B10795172B86CD3000929FF7 /* SearchResult.swift */,
 				B107951B2B86D00B00929FF7 /* SearchSection.swift */,
+				B10795372B8C44B000929FF7 /* SettingsModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -423,6 +426,7 @@
 				B1CFFF6F2B79FB0F00229CF1 /* AppDelegate.swift in Sources */,
 				B1CFFF972B7A080800229CF1 /* Extensions.swift in Sources */,
 				B1CFFF712B79FB0F00229CF1 /* SceneDelegate.swift in Sources */,
+				B10795382B8C44B000929FF7 /* SettingsModel.swift in Sources */,
 				B1CFFFCE2B7C3F7D00229CF1 /* NewAlbumReleasesResponse.swift in Sources */,
 				B10795102B857F2000929FF7 /* AlbumTracksResponse.swift in Sources */,
 				B1CFFFA72B7ABF6E00229CF1 /* AuthViewController.swift in Sources */,

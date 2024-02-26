@@ -64,12 +64,6 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
 
         // save genres to core data manually for now
         saveToCoreData()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshView), name: .refreshHomeView, object: nil)
-    }
-    
-    @objc func refreshView() {
-        fetchData()
     }
     
     func setBackButtonStyle() {
@@ -101,13 +95,6 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
         } catch {
             print("error saving genres")
         }
-        
-        // Fetch and print saved genres (optional)
-            if let savedGenres = newUser.genres {
-                for genre in savedGenres {
-                    print("\((genre as AnyObject).name ?? "")")
-                }
-            }
     }
     
     // MARK: - UI

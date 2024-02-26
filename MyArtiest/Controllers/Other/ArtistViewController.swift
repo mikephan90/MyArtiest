@@ -103,11 +103,6 @@ class ArtistViewController: UIViewController {
         setupGradientOverlay()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        NotificationCenter.default.post(name: .refreshHomeView, object: nil)
-    }
-    
     // MARK: - UI
     
     private func setupUI() {
@@ -414,7 +409,7 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleHeaderCollectionReusableView.identifier, for: indexPath) as? TitleHeaderCollectionReusableView else {
                 return UICollectionReusableView()
             }
-            let dynamicHeaderTitle = title + " \(artist?.name ?? "this Artist")"
+            let dynamicHeaderTitle = title
             headerView.configure(with: dynamicHeaderTitle)
             return headerView
         } else if kind == UICollectionView.elementKindSectionFooter {
