@@ -60,7 +60,8 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
         super.viewDidLoad()
         setupUI()
         fetchData()
-        
+        setBackButtonStyle()
+
         // save genres to core data manually for now
         saveToCoreData()
         
@@ -69,6 +70,15 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
     
     @objc func refreshView() {
         fetchData()
+    }
+    
+    func setBackButtonStyle() {
+        let backButtonImage = UIImage(systemName: "arrowshape.backward.fill")?
+            .withTintColor(UIColor.customPrimary, renderingMode: .alwaysOriginal)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
+        navigationController?.navigationBar.backIndicatorImage = backButtonImage
+        navigationController?.navigationBar.tintColor = .label
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
     }
     
     // SAVE GENRES TO CORE DATA.
