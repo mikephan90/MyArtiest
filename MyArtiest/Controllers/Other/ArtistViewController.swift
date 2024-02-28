@@ -305,8 +305,7 @@ class ArtistViewController: UIViewController {
                     self.artist = response.0
                     self.tracks = response.1
                     self.albums = response.2
-                
-                    self.checkIfAlreadyFavorite()
+
                     self.visibleTracks = Array(self.tracks.prefix(5))
                     self.configureModels()
                     self.configure()
@@ -329,16 +328,9 @@ class ArtistViewController: UIViewController {
     }
     
     @objc func removeFromFavorites() {
-        viewModel.removeArtistFromFavorites(artistId: artistId)
-        self.fetchData(artistId: self.artistId)
-    }
-    
-    private func checkIfAlreadyFavorite() {
         guard let artist else { return }
-        
-        viewModel.checkIfAlreadyFavorite(artist: artist) { isFavorite in
-            viewModel.isAlreadyFavorite = isFavorite
-        }
+        viewModel.removeArtistFromFavorites(artist: artist)
+        self.fetchData(artistId: self.artistId)
     }
     
     private func displayAddRemoveButton() {
@@ -449,11 +441,11 @@ extension ArtistViewController: ExpandFooterCollectionReusableViewDelegate {
 }
 
 extension ArtistViewController: ArtistViewModelDelegate {
-    func didAddArtistToFavorites(artistId: String) {
-        checkIfAlreadyFavorite()
+    func didAddArtistToFavorites(artist: Artist) {
+        viewModel.checkIfAlreadyFavorite(artist: artist)
     }
     
-    func didRemoveArtistFromFavorites(artistId: String) {
-        checkIfAlreadyFavorite()
+    func didRemoveArtistFromFavorites(artist: Artist) {
+        viewModel.checkIfAlreadyFavorite(artist: artist)
     }
 }

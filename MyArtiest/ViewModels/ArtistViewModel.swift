@@ -10,8 +10,8 @@ import CoreData
 import UIKit
 
 protocol ArtistViewModelDelegate: AnyObject {
-    func didRemoveArtistFromFavorites(artistId: String)
-    func didAddArtistToFavorites(artistId: String)
+    func didRemoveArtistFromFavorites(artist: Artist)
+    func didAddArtistToFavorites(artist: Artist)
 }
 
 final class ArtistViewModel {
@@ -40,6 +40,7 @@ final class ArtistViewModel {
             }
             switch result {
             case .success(let artistInfo):
+                self.checkIfAlreadyFavorite(artist: artistInfo)
                 artist = artistInfo
             case .failure(let error):
                 completion(.failure(error))
@@ -78,15 +79,15 @@ final class ArtistViewModel {
     
     func saveToFavoriteArtist(artist: Artist) {
         AppDataManager.shared.addArtistToFavorites(artist: artist)
-        delegate?.didAddArtistToFavorites(artistId: artist.id)
+        delegate?.didAddArtistToFavorites(artist: artist)
     }
     
-    func removeArtistFromFavorites(artistId: String) {
-        AppDataManager.shared.removeArtistFromFavorites(artistId: artistId)
-        delegate?.didRemoveArtistFromFavorites(artistId: artistId)
+    func removeArtistFromFavorites(artist: Artist) {
+        AppDataManager.shared.removeArtistFromFavorites(artist: artist)
+        delegate?.didRemoveArtistFromFavorites(artist: artist)
     }
     
-    func checkIfAlreadyFavorite(artist: Artist, completion: (Bool) -> Void) {
+    func checkIfAlreadyFavorite(artist: Artist) {
         AppDataManager.shared.checkIfFavoriteExist(artist: artist) { result in
             self.isAlreadyFavorite = result
         }

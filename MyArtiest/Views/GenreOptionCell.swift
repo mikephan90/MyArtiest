@@ -21,6 +21,8 @@ class GenreOptionCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 12, weight: .regular)
         label.numberOfLines = 1
         label.textAlignment = .center
+        label.textColor = .white
+        
         return label
     }()
     
@@ -39,7 +41,7 @@ class GenreOptionCell: UICollectionViewCell {
     
     private func setupUI() {
         contentView.addSubview(labelText)
-        contentView.backgroundColor = .secondarySystemBackground
+        contentView.backgroundColor = .customForeground
         contentView.layer.masksToBounds = true
         contentView.layer.cornerRadius = 10
         labelText.translatesAutoresizingMaskIntoConstraints = false
@@ -56,8 +58,7 @@ class GenreOptionCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
-            contentView.backgroundColor = isSelected ? .blue : .secondarySystemBackground
-            labelText.textColor = isSelected ? .white : .label
+            contentView.backgroundColor = isSelected ? .customPrimary : .customForeground
         }
     }
     

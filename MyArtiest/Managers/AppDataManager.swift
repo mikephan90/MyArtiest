@@ -33,8 +33,9 @@ class AppDataManager {
         }
     }
     
-    func removeArtistFromFavorites(artistId: String) {
+    func removeArtistFromFavorites(artist: Artist) {
         let context = appDelegate.persistentContainer.viewContext
+        let artistId = String(artist.id)
         fetchRequest.predicate = NSPredicate(format: "spotifyId == %@", artistId)
         
         do {
@@ -94,6 +95,18 @@ class AppDataManager {
                 print("Error saving artist to favorites: \(error)")
             }
         }
+    }
+    
+    func getGenresCountFromCoreData() -> Bool {
+        let context = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<Genre> = Genre.fetchRequest()
+        do {
+            let genres = try context.fetch(fetchRequest)
+            return genres.count > 0
+        } catch {
+            print("Error fetching data: \(error)")
+        }
+        return false
     }
     
     func checkIfFavoriteExist(artist: Artist, completion: @escaping (Bool) -> Void) {

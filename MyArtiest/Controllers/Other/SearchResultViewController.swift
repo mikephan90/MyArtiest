@@ -193,7 +193,8 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         let type = sections[indexPath.section]
         switch type {
         case .tracks(let viewModels):
-            break
+            let track = viewModels[indexPath.row]
+            PlaybackPresenter.shared.startPlayback(from: self, track: track)
         case .artists(let viewModels):
             let artistId = viewModels[indexPath.row].id
             delegate?.didTapArtistResult(artistId)

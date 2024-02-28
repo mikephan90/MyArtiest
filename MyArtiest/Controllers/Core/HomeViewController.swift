@@ -379,7 +379,8 @@ extension HomeViewController: UISearchBarDelegate, SearchResultViewControllerDel
         
         resultsController.delegate = self
         
-        viewModel.search(query: query) { result in
+        viewModel.search(query: query) { [weak self, weak resultsController] result in
+            guard let self = self, let resultsController = resultsController else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let results):

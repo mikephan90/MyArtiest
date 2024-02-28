@@ -30,30 +30,7 @@ class OnboardingViewModel {
         }
         return false
     }
-    
-    // SAVE GENRES TO CORE DATA. MOVE TO SELECT GENRE SECTION
-//    func saveGenresToCore() {
-//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        let context = appDelegate.persistentContainer.viewContext
-//        
-//        // Need to create user after login/onbaording screen
-//        let newUser = User(context: context)
-//        
-//        for genreName in genres {
-//            let newGenre = Genre(context: context)
-//            newGenre.name = genreName
-//            newUser.addToGenres(newGenre)
-//        }
-//        
-//        do {
-//            try context.save()
-//            print("genres saved")
-//        } catch {
-//            print("error saving genres")
-//        }
-//    }
 
-    
     func signIn(navigationController: UINavigationController?) {
         let authViewController = AuthViewController()
         

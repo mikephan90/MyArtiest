@@ -18,6 +18,16 @@ class SelectGenreViewController: UIViewController {
     
     // MARK: - Views
     
+    private var headerLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Select Genre(s)"
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 20, weight: .semibold)
+        
+        return label
+    }()
+    
     private var layout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -28,14 +38,20 @@ class SelectGenreViewController: UIViewController {
     }()
     
     private var continueButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Continue", for: .normal)
-        button.backgroundColor = .green
+        let button = UIButton(configuration: UIButton.Configuration.filled())
+        button.configuration?.baseBackgroundColor = .customPrimary
+        var buttonText = AttributedString.init("CONTINUE")
+        buttonText.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.configuration?.attributedTitle = buttonText
+        
         return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .customBackground
+        
         setupUI()
         fetchData()
     }
@@ -44,7 +60,7 @@ class SelectGenreViewController: UIViewController {
     
     private func setupUI() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
-        collectionView.backgroundColor = .systemBackground
+        collectionView.backgroundColor = .clear
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.allowsMultipleSelection = true
@@ -52,14 +68,18 @@ class SelectGenreViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         continueButton.translatesAutoresizingMaskIntoConstraints = false
         
+        view.addSubview(headerLabel)
         view.addSubview(collectionView)
         view.addSubview(continueButton)
         
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            headerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 20),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            continueButton.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
+            continueButton.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 20),
             continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             continueButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
@@ -68,16 +88,14 @@ class SelectGenreViewController: UIViewController {
     }
     
     @objc func didTapContinue() {
-        print(selectedGenres)
-        
         if selectedGenres.count > 0 {
             AppDataManager.shared.addGenresToCoreData(genres: selectedGenres)
+            
             let mainVC = TabBarViewController()
             mainVC.modalPresentationStyle = .fullScreen
-            navigationController?.pushViewController(mainVC, animated: true)
+            present(mainVC, animated: true, completion: nil)
         } else {
-            // Display error
-            print("Create alert to tell user to pick at least 1 genre")
+            genreSelectionErrorAlert()
         }
     }
     
@@ -96,6 +114,14 @@ class SelectGenreViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    private func genreSelectionErrorAlert() {
+        let alert = UIAlertController(title: "Error!", message: "Please select at least 1 genre.", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+        
+        present(alert, animated: true)
     }
 }
 
