@@ -25,21 +25,20 @@ In essence, this project was more than just a coding exercise; it was a journey 
 ### 🔨 Improvements:
 🏗️🔧
 **Works in Progress**
-- Improve Album screen tracklist
-- Artist screen
 - Tabbed Results in Search Field
-- Profile Screen using Spotify Info
 - A history list using Core Data to store a history of songs
-- Favorite Artist list
 - Bottom Navigation bar UI
 - Navigation UI
 - Launch screen
 - Better MVVM structure for unit testing
+- Improved genre list
 
 ### 📺 Preview
-![Simulator Screenshot - iPhone 15 Pro - 2024-02-22 at 01 18 49](https://github.com/mikephan90/MyArtiest/assets/20170095/2635c7f6-ba81-45de-abb1-d9706b01beb8)
-![Simulator Screenshot - iPhone 15 Pro - 2024-02-22 at 01 21 39](https://github.com/mikephan90/MyArtiest/assets/20170095/9786ff5e-e960-4fd8-8aa3-453dfdcebe8b)
-![Simulator Screenshot - iPhone 15 Pro - 2024-02-22 at 01 21 30](https://github.com/mikephan90/MyArtiest/assets/20170095/f2fa5d15-b1f3-4ce2-9d27-febf022f0398)
 
 
+![ezgif-6-11e2ca22bd](https://github.com/mikephan90/MyArtiest/assets/20170095/7574e189-41f3-4740-95b3-b23fcb2c35f4)
+
+![ezgif-6-e0042c6ce9](https://github.com/mikephan90/MyArtiest/assets/20170095/73cc9abc-516c-47ed-bc34-72b5bf3936fa)
+
+![ezgif-6-a2e35a5aba](https://github.com/mikephan90/MyArtiest/assets/20170095/df676626-25bf-45be-a891-9b51b1b6f7dd)
 
