@@ -7,16 +7,52 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class OnboardingViewModel {
     
     // MARK: - Properties
     
-    private let authManager = AuthManager.shared
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    let fetchRequest: NSFetchRequest<Genre> = Genre.fetchRequest()
     
     var signInCompletion: ((Bool) -> Void)?
     
     // MARK: - Methods
+    
+    func checkForGenres() -> Bool {
+        let context = appDelegate.persistentContainer.viewContext
+        do {
+            let genres = try context.fetch(fetchRequest)
+            return genres.count > 0
+        } catch {
+            print("Error fetching data: \(error)")
+        }
+        return false
+    }
+    
+    // SAVE GENRES TO CORE DATA. MOVE TO SELECT GENRE SECTION
+//    func saveGenresToCore() {
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        let context = appDelegate.persistentContainer.viewContext
+//        
+//        // Need to create user after login/onbaording screen
+//        let newUser = User(context: context)
+//        
+//        for genreName in genres {
+//            let newGenre = Genre(context: context)
+//            newGenre.name = genreName
+//            newUser.addToGenres(newGenre)
+//        }
+//        
+//        do {
+//            try context.save()
+//            print("genres saved")
+//        } catch {
+//            print("error saving genres")
+//        }
+//    }
+
     
     func signIn(navigationController: UINavigationController?) {
         let authViewController = AuthViewController()
@@ -28,7 +64,7 @@ class OnboardingViewModel {
         navigationController?.pushViewController(authViewController, animated: true)
         
         func exchangeCodeForToken(code: String) {
-            authManager.exchangeCodeForToken(code: code) { [weak self] success in
+            AuthManager.shared.exchangeCodeForToken(code: code) { [weak self] success in
                 self?.signInCompletion?(success)
             }
         }

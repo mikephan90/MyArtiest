@@ -14,9 +14,8 @@ class HomeViewModel: SearchResultViewControllerDelegate {
     
     var genres: Set<String> = []
     var recommendedTracks: [AudioTrack] = []
-    var favoriteArtists: [FavoriteArtist] = []
+    var favoriteArtists: Set<FavoriteArtist> = []
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    let fetchRequest: NSFetchRequest<FavoriteArtist> = FavoriteArtist.fetchRequest()
     weak var searchResultDelegate: SearchResultViewControllerDelegate?
     
     // MARK: - Methods
@@ -28,6 +27,7 @@ class HomeViewModel: SearchResultViewControllerDelegate {
     }
     
     func fetchData(completion: @escaping (Result<([AudioTrack], [Album]), Error>) -> Void) {
+        getGenresFromCoreData()
         
         let group = DispatchGroup()
         var newAlbums: [Album] = []
@@ -67,11 +67,30 @@ class HomeViewModel: SearchResultViewControllerDelegate {
     
     func getFavoriteArtistsFromCoreData() {
         let context = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<FavoriteArtist> = FavoriteArtist.fetchRequest()
         self.favoriteArtists.removeAll()
         do {
             let favoriteArtists = try context.fetch(fetchRequest)
             for favoriteArtist in favoriteArtists {
-                self.favoriteArtists.append(favoriteArtist)
+                self.favoriteArtists.insert(favoriteArtist)
+            }
+        } catch {
+            print("Error fetching data: \(error)")
+        }
+    }
+    
+    func getGenresFromCoreData() {
+        let context = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<Genre> = Genre.fetchRequest()
+        self.genres.removeAll()
+        do {
+            let genres = try context.fetch(fetchRequest)
+            for genre in genres {
+                if let name = genre.value(forKey: "name") as? String {
+                    self.genres.insert(name)
+                } else {
+                    print("Value for key 'name' is not a string or is nil")
+                }
             }
         } catch {
             print("Error fetching data: \(error)")

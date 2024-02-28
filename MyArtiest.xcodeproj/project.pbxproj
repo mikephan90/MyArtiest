@@ -27,6 +27,7 @@
 		B10795342B8C36C400929FF7 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10795332B8C36C400929FF7 /* AudioManager.swift */; };
 		B10795382B8C44B000929FF7 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10795372B8C44B000929FF7 /* SettingsModel.swift */; };
 		B107953E2B8D458F00929FF7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B107953D2B8D458F00929FF7 /* UserProfile.swift */; };
+		B10795442B8EAF5D00929FF7 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10795432B8EAF5D00929FF7 /* SettingsViewModel.swift */; };
 		B19CAD292B801CED009671FF /* PlaybackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19CAD282B801CED009671FF /* PlaybackPresenter.swift */; };
 		B19CAD2D2B81762A009671FF /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19CAD2C2B81762A009671FF /* AlbumViewController.swift */; };
 		B19CAD2F2B817653009671FF /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19CAD2E2B817653009671FF /* AlbumViewModel.swift */; };
@@ -91,6 +92,7 @@
 		B10795332B8C36C400929FF7 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		B10795372B8C44B000929FF7 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		B107953D2B8D458F00929FF7 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		B10795432B8EAF5D00929FF7 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		B19CAD282B801CED009671FF /* PlaybackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackPresenter.swift; sourceTree = "<group>"; };
 		B19CAD2C2B81762A009671FF /* AlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
 		B19CAD2E2B817653009671FF /* AlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 				B19CAD2E2B817653009671FF /* AlbumViewModel.swift */,
 				B10795212B86E47900929FF7 /* SearchResultViewModel.swift */,
 				B10795292B88163300929FF7 /* ArtistViewModel.swift */,
+				B10795432B8EAF5D00929FF7 /* SettingsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -434,6 +437,7 @@
 				B10795102B857F2000929FF7 /* AlbumTracksResponse.swift in Sources */,
 				B1CFFFA72B7ABF6E00229CF1 /* AuthViewController.swift in Sources */,
 				B1CFFFBE2B7C1CBC00229CF1 /* Album.swift in Sources */,
+				B10795442B8EAF5D00929FF7 /* SettingsViewModel.swift in Sources */,
 				B107951A2B86CE9C00929FF7 /* SearchResultResponse.swift in Sources */,
 				B107951E2B86D04B00929FF7 /* SearchResultViewController.swift in Sources */,
 				B1CFFFAD2B7AC1D000229CF1 /* OnboardingViewModel.swift in Sources */,

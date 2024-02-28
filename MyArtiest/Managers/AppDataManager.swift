@@ -17,8 +17,21 @@ class AppDataManager {
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     let fetchRequest: NSFetchRequest<FavoriteArtist> = FavoriteArtist.fetchRequest()
-    
+   
     // MARK: - Methods
+    
+    func clearCoreDataOnSignout() {
+        let context = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Genre")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try context.execute(deleteRequest)
+            try context.save()
+        } catch {
+            print("Error deleting data: \(error)")
+        }
+    }
     
     func removeArtistFromFavorites(artistId: String) {
         let context = appDelegate.persistentContainer.viewContext
@@ -41,15 +54,9 @@ class AppDataManager {
     func addArtistToFavorites(artist: Artist) {
         let artistId = String(artist.id)
         let context = appDelegate.persistentContainer.viewContext
-        
-        fetchRequest.predicate = NSPredicate(format: "spotifyId == %@", artistId)
-        
-        guard let entity = NSEntityDescription.entity(forEntityName: "FavoriteArtist", in: context) else {
-            fatalError("Unable to find entity description in model")
-        }
-        
         let user = User(context: context)
         
+        fetchRequest.predicate = NSPredicate(format: "spotifyId == %@", artistId)
         
         do {
             let existingObjects = try context.fetch(fetchRequest)
@@ -69,9 +76,29 @@ class AppDataManager {
         }
     }
     
-    func checkIfFavoriteExist(artist: Artist, completion: @escaping (Bool) -> Void) {
-        let artistId = String(artist.id)
+    func addGenresToCoreData(genres: Set<String>) {
         let context = appDelegate.persistentContainer.viewContext
+        let user = User(context: context)
+        
+        for genre in genres {
+            fetchRequest.predicate = NSPredicate(format: "name == %@", genre)
+            
+            do {
+                let newGenre = Genre(context: context)
+                newGenre.name = genre
+                user.addToGenres(newGenre)
+                
+                try context.save()
+                print("Successfully saved genre to core data")
+            } catch {
+                print("Error saving artist to favorites: \(error)")
+            }
+        }
+    }
+    
+    func checkIfFavoriteExist(artist: Artist, completion: @escaping (Bool) -> Void) {
+        let context = appDelegate.persistentContainer.viewContext
+        let artistId = String(artist.id)
         do {
             let existingObjects = try context.fetch(fetchRequest)
             

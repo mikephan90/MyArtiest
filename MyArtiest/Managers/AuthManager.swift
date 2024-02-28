@@ -222,6 +222,8 @@ final class AuthManager {
         UserDefaults.standard.setValue(nil, forKey: "refresh_token")
         UserDefaults.standard.setValue(nil, forKey: "expirationDate")
         
+        AppDataManager.shared.clearCoreDataOnSignout()
+        
         completion(true)
     }
 }

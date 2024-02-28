@@ -30,6 +30,25 @@ final class APICaller {
     
     private init() {}
     
+    // MARK: - Profile
+    
+    public func getProfile(completion: @escaping (Result<UserProfile, Error>) -> Void) {
+        createRequest(with: URL(string: APIConstants.baseApiUrl + "/me"), type: .GET) { request in
+            URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data, error == nil else {
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                do {
+                    let result = try JSONDecoder().decode(UserProfile.self, from: data)
+                    completion(.success(result))
+                } catch {
+                    completion(.failure(error))
+                }
+            }.resume()
+        }
+    }
+    
     // MARK: - Genres
     
     public func getGenres(completion: @escaping (Result<GenreResponse, Error>) -> Void) {

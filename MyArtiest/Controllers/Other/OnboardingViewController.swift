@@ -133,8 +133,17 @@ class OnboardingViewController: UIViewController {
             return
         }
         
-        let mainAppTabVarVC = TabBarViewController()
-        mainAppTabVarVC.modalPresentationStyle = .fullScreen
-        present(mainAppTabVarVC, animated: true)
+        let userHasFavoriteGenres = viewModel.checkForGenres()
+        
+        if userHasFavoriteGenres {
+            let mainAppTabVarVC = TabBarViewController()
+            mainAppTabVarVC.modalPresentationStyle = .fullScreen
+            present(mainAppTabVarVC, animated: true)
+        } else {
+            let selectGenreVC = SelectGenreViewController()
+            selectGenreVC.modalPresentationStyle = .fullScreen
+            present(selectGenreVC, animated: true)
+        }
+      
     }
 }

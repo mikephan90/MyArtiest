@@ -61,12 +61,8 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
         setupUI()
         fetchData()
         setBackButtonStyle()
-
-        // save genres to core data manually for now
-        saveToCoreData()
-        
     }
-//    
+    
 //    override func viewWillAppear(_ animated: Bool) {
 //        super.viewWillAppear(animated)
 //        if sections.count > 2 {
@@ -75,7 +71,6 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
 //        }
 //    }
     
-    
     func setBackButtonStyle() {
         let backButtonImage = UIImage(systemName: "arrowshape.backward.fill")?
             .withTintColor(UIColor.customPrimary, renderingMode: .alwaysOriginal)
@@ -83,28 +78,6 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
         navigationController?.navigationBar.backIndicatorImage = backButtonImage
         navigationController?.navigationBar.tintColor = .label
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = backButtonImage
-    }
-    
-    // SAVE GENRES TO CORE DATA.
-    func saveToCoreData() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        
-        // Need to create user after login/onbaording screen
-        let newUser = User(context: context)
-        
-        for genreName in genres {
-            let newGenre = Genre(context: context)
-            newGenre.name = genreName
-            newUser.addToGenres(newGenre)
-        }
-        
-        do {
-            try context.save()
-            print("genres saved")
-        } catch {
-            print("error saving genres")
-        }
     }
     
     // MARK: - UI
@@ -252,7 +225,6 @@ class HomeViewController: UIViewController, UISearchResultsUpdating {
     
     private func fetchData() {
         spinner.startAnimating()
-        viewModel.genres = genres
         viewModel.fetchData { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {

@@ -18,13 +18,6 @@ class SelectGenreViewController: UIViewController {
     
     // MARK: - Views
     
-    //    private var searchBar: UISearchBar = {
-    //        let searchBar = UISearchBar()
-    //        searchBar.translatesAutoresizingMaskIntoConstraints = false
-    //        searchBar.placeholder = "Search"
-    //        return searchBar
-    //    }()
-    
     private var layout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -50,9 +43,6 @@ class SelectGenreViewController: UIViewController {
     // MARK: - UI
     
     private func setupUI() {
-        //           searchBar.delegate = self
-        //           view.addSubview(searchBar)
-        
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemBackground
         collectionView.dataSource = self
@@ -66,10 +56,6 @@ class SelectGenreViewController: UIViewController {
         view.addSubview(continueButton)
         
         NSLayoutConstraint.activate([
-            //               searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            //               searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            //               searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -82,12 +68,17 @@ class SelectGenreViewController: UIViewController {
     }
     
     @objc func didTapContinue() {
-       
-        // Save to local storage
-        viewModel.saveSelectedGenres(selectedGenres)
+        print(selectedGenres)
         
-        let mainVC = HomeViewController()
-        navigationController?.pushViewController(mainVC, animated: true)
+        if selectedGenres.count > 0 {
+            AppDataManager.shared.addGenresToCoreData(genres: selectedGenres)
+            let mainVC = TabBarViewController()
+            mainVC.modalPresentationStyle = .fullScreen
+            navigationController?.pushViewController(mainVC, animated: true)
+        } else {
+            // Display error
+            print("Create alert to tell user to pick at least 1 genre")
+        }
     }
     
     
@@ -107,20 +98,6 @@ class SelectGenreViewController: UIViewController {
         }
     }
 }
-
-//extension SelectGenreViewController: UISearchBarDelegate {
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        if searchText.isEmpty {
-//            genres = viewModel.allGenres
-//        }
-//        
-//        genres = searchText.isEmpty ? genres : genres.filter {
-//            $0.range(of: searchText, options: .caseInsensitive) != nil
-//        }
-//        
-//        collectionView.reloadData()
-//    }
-//}
 
 extension SelectGenreViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
