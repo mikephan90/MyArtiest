@@ -10,8 +10,9 @@ My Artiest is a dynamic iOS app crafted to enhance your music experience. It all
 
 ### 🗒️ Features:
 This project offers an elegant solution tailored for music aficionados in search of personalized recommendations. With a seamless integration of Spotify's API, users can finely curate their preferences by selecting preferred genres, unlocking a curated selection of song and album suggestions. The app ensures effortless access to beloved artists directly from the home screen upon launch. Additionally, intuitive playback controls empower users to immerse themselves in their favorite tunes while enjoying an intuitive search functionality to explore their own music collection, elevating their musical experience.
+
 ### ⚙️ Process:
-Describe how you started and what the experience was like, whether you struggled with anything and include conclusions and other reliant details
+Utilizing various resources, I embarked on the development of this application, immersing myself in UIKit implementation, network calls, Swift development, and a deeper exploration of MVVM architecture. Despite these resources offering a foundation, I was steadfast in my determination to fully grasp every component. Each task was approached with the intention of gaining profound insight into its mechanics, prioritizing understanding over mere execution. As a result, this endeavor required significant time and dedication. However, with each passing day dedicated to the project, my confidence in its functionality steadily increased. The manageable size of the application allowed for a thorough understanding of its complexities.
 
 ### 💭 Learnings:
 Crafted entirely for iOS using Swift, this project was a delightful journey that not only allowed me to reinforce my existing knowledge but also enabled me to delve deeper into the intricacies of app development. One of the most rewarding aspects was honing my UI skills through the meticulous creation of interfaces using UIKit. By eschewing Interface Builder and opting for programmatic UI development, I found myself immersed in a process that afforded me unprecedented control over the visual presentation and functionality of the app.
@@ -32,6 +33,7 @@ In essence, this project was more than just a coding exercise; it was a journey 
 - Launch screen
 - Better MVVM structure for unit testing
 - Improved genre list
+- Spotify SDK for full playback
 
 ### 📺 Preview
 
