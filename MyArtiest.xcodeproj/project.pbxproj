@@ -69,6 +69,7 @@
 		B1CFFFD92B7D7F4D00229CF1 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFD82B7D7F4D00229CF1 /* PlayerViewController.swift */; };
 		B1CFFFDB2B7E6F6100229CF1 /* PlayerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFDA2B7E6F6100229CF1 /* PlayerControlsView.swift */; };
 		B1CFFFDD2B7F17A700229CF1 /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CFFFDC2B7F17A700229CF1 /* PlayerViewModel.swift */; };
+		B1D769112B94463400C8FA8E /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = B1D769102B94463400C8FA8E /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,7 +121,6 @@
 		B1CFFFA82B7ABF7F00229CF1 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		B1CFFFAA2B7AC08D00229CF1 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		B1CFFFAC2B7AC1D000229CF1 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
-		B1CFFFAE2B7AC33D00229CF1 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 		B1CFFFAF2B7AC58000229CF1 /* SelectGenresViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectGenresViewModel.swift; sourceTree = "<group>"; };
 		B1CFFFB52B7C114500229CF1 /* AlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		B1CFFFB92B7C1C7F00229CF1 /* RecommendedTrackResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedTrackResponse.swift; sourceTree = "<group>"; };
@@ -135,6 +135,8 @@
 		B1CFFFD82B7D7F4D00229CF1 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		B1CFFFDA2B7E6F6100229CF1 /* PlayerControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerControlsView.swift; sourceTree = "<group>"; };
 		B1CFFFDC2B7F17A700229CF1 /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
+		B1D7690F2B9445FA00C8FA8E /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
+		B1D769102B94463400C8FA8E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,7 +163,6 @@
 		B1CFFF622B79FB0F00229CF1 = {
 			isa = PBXGroup;
 			children = (
-				B1CFFFAE2B7AC33D00229CF1 /* config.xcconfig */,
 				B1CFFF6D2B79FB0F00229CF1 /* MyArtiest */,
 				B1CFFF6C2B79FB0F00229CF1 /* Products */,
 			);
@@ -186,6 +187,8 @@
 				B1CFFF842B79FC4F00229CF1 /* Controllers */,
 				B1CFFF822B79FC4500229CF1 /* Resources */,
 				B1CFFF7C2B79FB1000229CF1 /* Info.plist */,
+				B1D7690F2B9445FA00C8FA8E /* config.xcconfig */,
+				B1D769102B94463400C8FA8E /* .gitignore */,
 			);
 			path = MyArtiest;
 			sourceTree = "<group>";
@@ -381,6 +384,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1CFFF7B2B79FB1000229CF1 /* LaunchScreen.storyboard in Resources */,
+				B1D769112B94463400C8FA8E /* .gitignore in Resources */,
 				B1CFFF782B79FB1000229CF1 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -469,7 +473,6 @@
 /* Begin XCBuildConfiguration section */
 		B1CFFF7D2B79FB1000229CF1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B1CFFFAE2B7AC33D00229CF1 /* config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -533,7 +536,6 @@
 		};
 		B1CFFF7E2B79FB1000229CF1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B1CFFFAE2B7AC33D00229CF1 /* config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
